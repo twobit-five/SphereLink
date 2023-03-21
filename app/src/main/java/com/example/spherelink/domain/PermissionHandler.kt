@@ -1,6 +1,7 @@
 package com.example.spherelink.domain
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.widget.Toast
@@ -9,13 +10,18 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
+//TODO REevaluate this class.  Would love to utilize/leverage it more.
 class PermissionHandler(
     private val context: Context,
+    private val activity: Activity
 ) {
 
+    //TODO Remove unneeded permissions
     companion object {
+        private const val REQUEST_CODE = 123
         val REQUIRED_PERMISSIONS = arrayOf(
             Manifest.permission.BLUETOOTH,
             Manifest.permission.BLUETOOTH_ADMIN,
@@ -24,8 +30,8 @@ class PermissionHandler(
 
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_BACKGROUND_LOCATION
-        )
+            Manifest.permission.ACCESS_BACKGROUND_LOCATION,
+            )
     }
 
     fun checkPermissions(): Boolean {
@@ -34,32 +40,19 @@ class PermissionHandler(
         }
     }
 
-}
+    fun requestPermissions() {
+        ActivityCompat.requestPermissions(activity, REQUIRED_PERMISSIONS, REQUEST_CODE)
+    }
 
-@Composable
-fun PermissionHandlerComposables(
-    permissionHandler: PermissionHandler,
-    onPermissionsGranted: () -> Unit
-) {
-    val context = LocalContext.current
-
-    // Use the REQUIRED_PERMISSIONS constant here
-    val requestPermissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestMultiplePermissions()
-    ) { permissions ->
-        if (permissions.all { it.value }) {
-            onPermissionsGranted()
-        } else {
-            // At least one permission denied, show a message or disable functionality
-            val missingPermissions = permissions.filter { !it.value }.map { it.key }
-            val message = "The following permissions are required: ${missingPermissions.joinToString()}"
-            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        if (requestCode == REQUEST_CODE) {
+            if (checkPermissions()) {
+                // All permissions granted, proceed with app logic
+            } else {
+                // Handle denied permissions
+            }
         }
     }
 
-    LaunchedEffect(permissionHandler) {
-        if (!permissionHandler.checkPermissions()) {
-            requestPermissionLauncher.launch(PermissionHandler.REQUIRED_PERMISSIONS)
-        }
-    }
 }
+

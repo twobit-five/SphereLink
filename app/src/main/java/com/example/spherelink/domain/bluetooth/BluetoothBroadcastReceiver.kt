@@ -11,8 +11,7 @@ import android.widget.Toast
 import com.example.spherelink.domain.PermissionHandler
 
 class BluetoothBroadcastReceiver(context: Context,
-                                 private val permissionHandler: PermissionHandler,
-                                 private val deviceManager: DeviceManager
+                                 private val permissionHandler: PermissionHandler
 ) : BroadcastReceiver() {
 
     private val TAG = "BluetoothBroadcastReceiver"
@@ -50,55 +49,9 @@ class BluetoothBroadcastReceiver(context: Context,
                         // Bluetooth turned on
                         Toast.makeText(context, "Bluetooth turned on", Toast.LENGTH_SHORT).show()
                         Log.d(TAG, "Bluetooth turned on")
-                        // Connect to devices when Bluetooth is turned on
-                        deviceManager.connectAll()
+
                     }
                 }
-            }
-
-
-            BluetoothDevice.ACTION_ACL_CONNECTED -> {
-                // Device connected
-                val device: BluetoothDevice? = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)
-                device?.let {
-                    Toast.makeText(context, "Device connected: ${it.name} - ${it.address}", Toast.LENGTH_SHORT).show()
-                    Log.d(TAG, "Device connected: ${it.name} - ${it.address}")
-                }
-            }
-
-            BluetoothDevice.ACTION_BOND_STATE_CHANGED -> {
-                // Device bond state changed
-                val device: BluetoothDevice? = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)
-                device?.let {
-                    Toast.makeText(context, "Device bond state changed: ${it.name} - ${it.address}", Toast.LENGTH_SHORT).show()
-                    Log.d(TAG, "Device bond state changed: ${it.name} - ${it.address}")
-                }
-            }
-
-            BluetoothDevice.ACTION_ACL_DISCONNECTED -> {
-                // Device disconnected
-                val device: BluetoothDevice? = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)
-                device?.let {
-                    Toast.makeText(context, "Device disconnected: ${it.name} - ${it.address}", Toast.LENGTH_SHORT).show()
-                    Log.d(TAG, "Device disconnected: ${it.name} - ${it.address}")
-                }
-            }
-
-            //may remove this as the app doesn't currently scan for devices
-            BluetoothDevice.ACTION_FOUND -> {
-                // Device found
-                val device: BluetoothDevice? = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)
-                device?.let {
-                    Toast.makeText(context, "Device found: ${it.name} - ${it.address}", Toast.LENGTH_SHORT).show()
-                    Log.d(TAG, "Device found: ${it.name} - ${it.address}")
-                }
-            }
-
-            //may remove this as the app doesn't currently scan for devices
-            BluetoothAdapter.ACTION_DISCOVERY_FINISHED -> {
-                // Discovery finished
-                Toast.makeText(context, "Discovery finished", Toast.LENGTH_SHORT).show()
-                Log.d(TAG, "Discovery finished")
             }
         }
     }
