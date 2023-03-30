@@ -2,14 +2,14 @@ package com.example.spherelink.ui.device_list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.spherelink.Util.UiEvent
+import com.example.spherelink.util.UiEvent
 import com.example.spherelink.data.repository.DeviceRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import com.example.spherelink.Util.Routes
+import com.example.spherelink.util.Routes
 import com.example.spherelink.data.entities.DeviceEntity
 
 @HiltViewModel

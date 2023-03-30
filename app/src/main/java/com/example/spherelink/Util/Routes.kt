@@ -1,4 +1,4 @@
-package com.example.spherelink.Util
+package com.example.spherelink.util
 
 object Routes {
     const val DEVICE_LIST = "device_list"

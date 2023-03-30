@@ -1,4 +1,4 @@
-package com.example.spherelink.Util
+package com.example.spherelink.util
 
 sealed class UiEvent {
 
