@@ -7,5 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "rssi_table")
 data class DeviceEntity(
     @PrimaryKey val address: String,
-    val rssi: Int
+    val rssi: Int,
+    val distance: Int,
+    val timestamp: Long
 )
