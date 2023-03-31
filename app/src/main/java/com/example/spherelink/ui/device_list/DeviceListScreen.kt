@@ -1,6 +1,7 @@
 package com.example.spherelink.ui.device_list
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -13,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.spherelink.util.UiEvent
@@ -34,7 +34,7 @@ fun DeviceListScreen(
                 is UiEvent.ShowSnackbar -> {
                     val result = scaffoldState.snackbarHostState.showSnackbar(
                         message = event.message,
-                        actionLabel = event.actionLabel
+                        actionLabel = event.action
                     )
                     if (result == SnackbarResult.ActionPerformed) {
                         viewModel.onEvent(DeviceListEvent.OnUndoDeleteClick)
@@ -67,16 +67,12 @@ fun DeviceListScreen(
                     onEvent = viewModel::onEvent,
                     modifier = Modifier
                         .fillMaxWidth()
-                            //onclickable for device details?
+                        .clickable {
+                            viewModel.onEvent(DeviceListEvent.OnDeviceClick(device))
+                        }
                         .padding(16.dp)
                 )
             }
         }
     }
-}
-
-@Composable
-@Preview
-fun DeviceListScreenPreview() {
-    DeviceListScreen(onNavigate = {})
 }

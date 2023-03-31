@@ -16,7 +16,7 @@ class DeviceRepositoryImpl (
         deviceDao.deleteDevice(device)
     }
 
-    override suspend fun getDeviceByAddress(address: String): Flow<DeviceEntity> {
+    override suspend fun getDeviceByAddress(address: String): DeviceEntity {
         return deviceDao.getDeviceByAddress(address)
     }
 

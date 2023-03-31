@@ -11,7 +11,7 @@ interface DeviceDao {
     @Delete
     suspend fun deleteDevice(deviceEntity: DeviceEntity)
     @Query("SELECT * FROM rssi_table WHERE address = :address")
-    fun getDeviceByAddress(address: String): Flow<DeviceEntity>
+    fun getDeviceByAddress(address: String): DeviceEntity
     @Query("SELECT * FROM rssi_table")
     fun getAllDevices(): Flow<List<DeviceEntity>>
 }

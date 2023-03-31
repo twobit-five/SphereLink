@@ -7,6 +7,6 @@ sealed class UiEvent {
 
     data class ShowSnackbar(
         val message: String,
-        val actionLabel: String? = null,
+        val action: String? = null,
         ) : UiEvent()
 }

@@ -21,7 +21,7 @@ object AppModule {
         return Room.databaseBuilder(
             app,
             RssiDatabase::class.java,
-            "rssi_database"
+            "rssi_database",
         ).build()
     }
 

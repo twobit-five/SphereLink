@@ -27,16 +27,19 @@ class DeviceListViewModel @Inject constructor(
     fun onEvent(event: DeviceListEvent) {
         when (event) {
             is DeviceListEvent.OnAddDeviceClick -> {
-                sendUiEvent(UiEvent.Navigate(Routes.ADD_DEVICE))
+                sendUiEvent(UiEvent.Navigate(Routes.ADD_EDIT_DEVICE))
             }
-            is DeviceListEvent.onDeleteDeviceClick -> {
+            is DeviceListEvent.OnDeviceClick -> {
+                sendUiEvent(UiEvent.Navigate(Routes.ADD_EDIT_DEVICE))
+            }
+            is DeviceListEvent.OnDeleteDeviceClick -> {
                 viewModelScope.launch {
                     deletedDevice = event.device
                     repository.deleteDevice(event.device)
 
                     sendUiEvent(UiEvent.ShowSnackbar(
                         message = "Device deleted",
-                        actionLabel = "Undo"
+                        action = "Undo"
                     ))
                 }
 
@@ -46,6 +49,15 @@ class DeviceListViewModel @Inject constructor(
                     viewModelScope.launch {
                         repository.insertDevice(device)
                     }
+                }
+            }
+            is DeviceListEvent.OnDoneChange -> {
+                viewModelScope.launch {
+                    repository.insertDevice(
+                        event.device.copy(
+                            isDone = event.isDone
+                        )
+                    )
                 }
             }
         }

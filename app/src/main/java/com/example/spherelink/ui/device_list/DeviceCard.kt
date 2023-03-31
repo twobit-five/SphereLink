@@ -38,7 +38,7 @@ fun DeviceCard(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = "device.name",
+                    text = device.device_name,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(bottom = 4.dp)
                 )
@@ -67,7 +67,7 @@ fun DeviceCard(
                 )
             }
             IconButton(onClick = {
-                onEvent(DeviceListEvent.onDeleteDeviceClick(device))
+                onEvent(DeviceListEvent.OnDeleteDeviceClick(device))
             }) {
                 Icon(
                     imageVector = Icons.Filled.Delete,
@@ -86,9 +86,11 @@ fun PreviewDeviceCard(){
     DeviceCard(
         device = DeviceEntity(
             address = "00:00:00:00:00",
+            device_name = "Test Device",
             rssi = -50,
             distance = 10,
-            timestamp = 0
+            timestamp = 0,
+            isDone = false
         ),
         onEvent = {}
     )
