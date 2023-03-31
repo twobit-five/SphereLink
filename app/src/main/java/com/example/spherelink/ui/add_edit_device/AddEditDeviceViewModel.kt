@@ -34,8 +34,8 @@ class AddEditDeviceViewModel @Inject constructor(
         var address = savedStateHandle.get<String>("deviceAddress") ?: ""
         if(address !=  "") {
             viewModelScope.launch {
-                repository.getDeviceByAddress(address)?.let { deviceEntity ->
-                    deviceAddress = deviceEntity.address ?: ""
+                repository.getDeviceByAddress(address).let { deviceEntity ->
+                    deviceAddress = deviceEntity.address
                     this@AddEditDeviceViewModel.device = device
                 }
             }

@@ -1,8 +1,13 @@
 package com.example.spherelink.ui.main
 
+import android.Manifest
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -13,13 +18,42 @@ import com.example.spherelink.ui.device_list.DeviceListScreen
 import com.example.spherelink.ui.theme.SphereLinkTheme
 import com.example.spherelink.util.Routes
 import dagger.hilt.android.AndroidEntryPoint
+import android.provider.Settings
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.runtime.LaunchedEffect
+import com.example.spherelink.ui.permission.*
+
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private val permissionsToRequest = arrayOf(
+        Manifest.permission.BLUETOOTH_ADMIN,
+        Manifest.permission.BLUETOOTH,
+        Manifest.permission.BLUETOOTH_CONNECT,
+        //Manifest.permission.ACCESS_FINE_LOCATION,
+        //Manifest.permission.ACCESS_COARSE_LOCATION
+    )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             SphereLinkTheme {
+
+                val viewModel = viewModel<PermissionViewModel>()
+                val dialogQueue = viewModel.visiblePermissionDialogQueue
+
+                val multiplePermissionResultLauncher = rememberLauncherForActivityResult(
+                    contract = ActivityResultContracts.RequestMultiplePermissions(),
+                    onResult = { perms ->
+                        permissionsToRequest.forEach { permission ->
+                            viewModel.onPermissionResult(
+                                permission = permission,
+                                isGranted = perms[permission] == true
+                            )
+                        }
+                    }
+                )
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,
@@ -46,7 +80,54 @@ class MainActivity : ComponentActivity() {
                         })
                     }
                 }
+                LaunchedEffect(Unit) {
+                    // Launch permissions request here
+                    multiplePermissionResultLauncher.launch(permissionsToRequest)
+                }
+
+                dialogQueue
+                    .reversed()
+                    .forEach { permission ->
+                        PermissionDialog(
+                            permissionTextProvider = when (permission) {
+                                Manifest.permission.BLUETOOTH_ADMIN -> {
+                                    BluetoothAdminPermissionTextProvider()
+                                }
+                                Manifest.permission.BLUETOOTH -> {
+                                    BluetoothPermissionTextProvider()
+                                }
+                                Manifest.permission.BLUETOOTH_CONNECT -> {
+                                    BluetoothConnectPermissionTextProvider()
+                                }
+                                Manifest.permission.ACCESS_FINE_LOCATION -> {
+                                    FineLocationPermissionTextProvider()
+                                }
+                                Manifest.permission.ACCESS_COARSE_LOCATION -> {
+                                    CourseLocationPermissionTextProvider()
+                                }
+                                else -> return@forEach
+                            },
+                            isPermanentlyDeclined = !shouldShowRequestPermissionRationale(
+                                permission
+                            ),
+                            onDismiss = viewModel::dismissDialog,
+                            onOkClick = {
+                                viewModel.dismissDialog()
+                                multiplePermissionResultLauncher.launch(
+                                    arrayOf(permission)
+                                )
+                            },
+                            onGoToAppSettingsClick = ::openAppSettings
+                        )
+                    }
             }
         }
     }
+}
+
+fun Activity.openAppSettings() {
+    Intent(
+        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+        Uri.fromParts("package", packageName, null)
+    ).also(::startActivity)
 }
