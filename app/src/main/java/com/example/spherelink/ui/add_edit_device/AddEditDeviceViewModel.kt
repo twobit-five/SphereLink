@@ -31,7 +31,7 @@ class AddEditDeviceViewModel @Inject constructor(
     val uiEvent = _uiEvent.receiveAsFlow()
 
     init {
-        var address = savedStateHandle.get<String>("deviceAddress") ?: ""
+        val address = savedStateHandle.get<String>("deviceAddress") ?: ""
         if(address !=  "") {
             viewModelScope.launch {
                 repository.getDeviceByAddress(address).let { deviceEntity ->
