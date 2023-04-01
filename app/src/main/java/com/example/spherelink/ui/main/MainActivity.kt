@@ -22,6 +22,7 @@ import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.LaunchedEffect
+import androidx.core.content.ContextCompat
 import com.example.spherelink.ui.permission.*
 
 
@@ -37,6 +38,11 @@ class MainActivity : ComponentActivity() {
     )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Start the foreground service
+        val intent = Intent(this, BLUETOOTH_SERVICE::class.java)
+        ContextCompat.startForegroundService(this, intent)
+
         setContent {
             SphereLinkTheme {
 
