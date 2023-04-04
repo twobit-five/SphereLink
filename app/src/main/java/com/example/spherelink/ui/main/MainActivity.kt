@@ -23,25 +23,24 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.LaunchedEffect
 import androidx.core.content.ContextCompat
+import com.example.spherelink.domain.bluetooth.BluetoothService
 import com.example.spherelink.ui.permission.*
 
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
+    private var isBluetoothServiceRunning = false
+
     private val permissionsToRequest = arrayOf(
         Manifest.permission.BLUETOOTH_ADMIN,
         Manifest.permission.BLUETOOTH,
         Manifest.permission.BLUETOOTH_CONNECT,
-        //Manifest.permission.ACCESS_FINE_LOCATION,
-        //Manifest.permission.ACCESS_COARSE_LOCATION
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
     )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Start the foreground service
-        val intent = Intent(this, BLUETOOTH_SERVICE::class.java)
-        ContextCompat.startForegroundService(this, intent)
 
         setContent {
             SphereLinkTheme {
@@ -128,6 +127,25 @@ class MainActivity : ComponentActivity() {
                     }
             }
         }
+
+        // Start the foreground service
+        val intent = Intent(this, BluetoothService::class.java)
+        ContextCompat.startForegroundService(this, intent)
+        isBluetoothServiceRunning = true
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        if (isBluetoothServiceRunning) {
+            stopBluetoothService()
+        }
+    }
+
+    private fun stopBluetoothService() {
+        val intent = Intent(this, BluetoothService::class.java)
+        stopService(intent)
+        isBluetoothServiceRunning = false
     }
 }
 

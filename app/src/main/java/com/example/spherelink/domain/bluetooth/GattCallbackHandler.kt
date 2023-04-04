@@ -3,6 +3,7 @@ package com.example.spherelink.domain.bluetooth
 import android.annotation.SuppressLint
 import android.bluetooth.*
 import android.util.Log
+import javax.inject.Inject
 
 class GattCallbackHandler: BluetoothGattCallback() {
     private val TAG = "GattCallbackHandler"

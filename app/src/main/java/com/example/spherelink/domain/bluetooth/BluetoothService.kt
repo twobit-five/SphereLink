@@ -8,26 +8,73 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.IBinder
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.example.spherelink.R
+import com.example.spherelink.data.entities.DeviceEntity
+import com.example.spherelink.data.repository.DeviceRepository
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+import kotlinx.coroutines.*
 
-class BluetoothService: Service() {
+@AndroidEntryPoint
+class BluetoothService (): Service() {
+
+    private val TAG = "BluetoothService"
+    private val coroutineScope = CoroutineScope(Dispatchers.IO)
+    private var job: Job? = null
+    private var deviceList: List<DeviceEntity> = emptyList()
+
+    @Inject
+    lateinit var connectionManager: BluetoothConnectionManager
+
+    @Inject
+    lateinit var repository: DeviceRepository
+
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         // Start the service in the foreground
+        Log.v(TAG,"BluetoothService is running in the foreground")
+
         startForeground(1, createNotification())
 
-        // Do any background work here
+        // Launch a coroutine to call the suspend function
+        job = coroutineScope.launch {
+            Log.v(TAG,"BluetoothService isActive: ${job?.isActive}")
+            while (isActive) {
+                // Collect the flow from getAllDevices() and process each emitted item
+                repository.getAllDevices().collect { devices ->
+                    // Update the device list
+                    deviceList = devices
+                    // Convert the list of devices to a list of device addresses
+                    val deviceAddresses = devices.map { device -> device.address }
+                    Log.v(TAG, "List of device addresses: $deviceAddresses")
 
-        // Stop the service when finished
-        stopSelf()
+                    //update the connection manager with the most current device list
+                    connectionManager.setDeviceList(deviceList)
 
-        return START_NOT_STICKY
+                    // Connect to all devices
+                    connectionManager.connectToAllDevices()
+
+
+                    delay(10000) //delay 10 seconds
+                }
+            }
+        }
+
+        Thread.sleep(10000)
+
+        return START_STICKY
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        // Cancel the coroutine job when the service is destroyed
+        job?.cancel()
+    }
 
     private fun createNotification(): Notification {
         // Create a notification to show in the status bar
