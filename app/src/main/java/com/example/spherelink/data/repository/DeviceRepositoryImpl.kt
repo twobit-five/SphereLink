@@ -23,4 +23,8 @@ class DeviceRepositoryImpl (
     override fun getAllDevices(): Flow<List<DeviceEntity>> {
         return deviceDao.getAllDevices()
     }
+
+    //override suspend getDistanceByAddress(address: String): Int {
+    //    return deviceDao.getDeviceByAddress(address).distance
+    //}
 }

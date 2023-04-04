@@ -59,6 +59,8 @@ class BluetoothService (): Service() {
                     // Connect to all devices
                     connectionManager.connectToAllDevices()
 
+                    //connectionManager.requestRssiFromAllDevices()
+
 
                     delay(10000) //delay 10 seconds
                 }

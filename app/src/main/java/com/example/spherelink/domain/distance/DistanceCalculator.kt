@@ -1,5 +1,7 @@
 package com.example.spherelink.domain.distance
 
+import com.example.spherelink.data.entities.DeviceEntity
+
 interface DistanceCalculator {
-    fun calculateDistance(rssi: Int): Int
+    fun calculateDistance(deviceAddress: String, rssi:Int)
 }

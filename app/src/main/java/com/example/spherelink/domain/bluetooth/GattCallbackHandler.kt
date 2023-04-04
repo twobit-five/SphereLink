@@ -3,10 +3,13 @@ package com.example.spherelink.domain.bluetooth
 import android.annotation.SuppressLint
 import android.bluetooth.*
 import android.util.Log
+import com.example.spherelink.domain.distance.DistanceCalculator
 import javax.inject.Inject
 
 class GattCallbackHandler: BluetoothGattCallback() {
     private val TAG = "GattCallbackHandler"
+
+    private  lateinit var  distanceCalculator: DistanceCalculator
 
     @SuppressLint("MissingPermission")
     override fun onConnectionStateChange(gatt: BluetoothGatt, status: Int, newState: Int) {
@@ -41,5 +44,17 @@ class GattCallbackHandler: BluetoothGattCallback() {
 
     override fun onCharacteristicChanged(gatt: BluetoothGatt, characteristic: BluetoothGattCharacteristic) {
         // Handle characteristic changed
+    }
+
+
+    override fun onReadRemoteRssi(gatt: BluetoothGatt?, rssi: Int, status: Int) {
+        super.onReadRemoteRssi(gatt, rssi, status)
+
+
+        //caclulate distance from current rssi
+        //distanceCalculator.calculateDistance(rssi)
+
+        // do caluclation for distance on past and current
+
     }
 }
