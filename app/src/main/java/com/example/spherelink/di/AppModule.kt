@@ -6,6 +6,8 @@ import androidx.room.Room
 import com.example.spherelink.data.database.RssiDatabase
 import com.example.spherelink.data.repository.DeviceRepository
 import com.example.spherelink.data.repository.DeviceRepositoryImpl
+import com.example.spherelink.domain.distance.DistanceCalculator
+import com.example.spherelink.domain.distance.DistanceCalculatorImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

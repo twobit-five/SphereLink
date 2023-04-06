@@ -1,39 +1,36 @@
 package com.example.spherelink.domain.distance
 
-import com.example.spherelink.data.entities.DeviceEntity
+import android.util.Log
 import com.example.spherelink.data.repository.DeviceRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.math.pow
 
-class DistanceCalculatorImpl: DistanceCalculator {
+private const val attenValue = 2.4
+private val baseRssi = -58
+private val alphaWeight = 0.4
 
-    @Inject
-    lateinit var repository: DeviceRepository
+private const val TAG = "DistanceCalculatorImpl"
 
-    override fun calculateDistance(deviceAddress: String, rssi: Int) {
+class DistanceCalculatorImpl @Inject constructor(private val repository: DeviceRepository) : DistanceCalculator {
 
-        //wrap in coroutine
-        //val deviceEntity = repository.getDeviceByAddress(deviceAddress)
+    override fun calculateDistance(deviceAddress: String, currentRSSI: Int) {
 
-        //update deviceEntity with new fields./
-        //create the obeject????
+        CoroutineScope(Dispatchers.IO).launch {
 
-        //needs to be inserted after deviceEntity is created
-        //TODO
-        // add rssi to db
+            val distance = 10.0.pow((baseRssi - currentRSSI) / (10 * attenValue))
+            val oldDistance = repository.getDistance(deviceAddress)
+            Log.d(TAG, "Old Distance for device $deviceAddress: $oldDistance")
 
-        //uncomment when above is done
-        //val distance = deviceEntity.distance
+            val newDistance = ((alphaWeight * distance) + ((1 - alphaWeight) * oldDistance)).toInt()
+            Log.d(TAG, "New Distance calculated for device $deviceAddress: $newDistance")
 
+            //TODO filter for values beyond a certain standard deviation from the mean?
 
-        //Grab distance from db
-        //calculate distance
-
-        //update distance in db
-
-        //examples
-        //repository.updateDistance(deviceEntity.address, distance)
-        //example
-        //repository.insertDevice(deviceEntity)
-        //
+            repository.updateDistance(deviceAddress, newDistance)
+            repository.updateRssi(deviceAddress, currentRSSI)
+        }
     }
 }

@@ -10,5 +10,7 @@ data class DeviceEntity(
     val rssi: Int,
     val distance: Int,
     val isDone: Boolean,
-    val timestamp: Long
+    val isConnected: Boolean,
+    val timestamp: Long,
+    val batteryLevel: Int
 )
