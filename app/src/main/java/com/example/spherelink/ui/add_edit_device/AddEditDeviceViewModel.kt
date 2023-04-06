@@ -31,11 +31,11 @@ class AddEditDeviceViewModel @Inject constructor(
     val uiEvent = _uiEvent.receiveAsFlow()
 
     init {
-        var address = savedStateHandle.get<String>("deviceAddress") ?: ""
+        val address = savedStateHandle.get<String>("deviceAddress") ?: ""
         if(address !=  "") {
             viewModelScope.launch {
-                repository.getDeviceByAddress(address)?.let { deviceEntity ->
-                    deviceAddress = deviceEntity.address ?: ""
+                repository.getDeviceByAddress(address).let { deviceEntity ->
+                    deviceAddress = deviceEntity.address
                     this@AddEditDeviceViewModel.device = device
                 }
             }
@@ -65,7 +65,9 @@ class AddEditDeviceViewModel @Inject constructor(
                             rssi = 0,
                             distance = 0,
                             timestamp = 0,
-                            isDone = device?.isDone ?: false
+                            isDone = device?.isDone ?: false,
+                            isConnected = false,
+                            batteryLevel = 0
                         )
                     )
                     sendUiEvent(UiEvent.PopBackStack)

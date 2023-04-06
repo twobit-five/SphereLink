@@ -8,7 +8,9 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -17,6 +19,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.spherelink.data.entities.DeviceEntity
 import androidx.compose.ui.graphics.Color
+import java.time.Duration
+import java.time.Instant
 
 
 @Composable
@@ -24,7 +28,8 @@ fun DeviceCard(
     device: DeviceEntity,
     onEvent: (DeviceListEvent) -> Unit,
     modifier: Modifier = Modifier,
-    cornerRadius: Dp = 16.dp
+    cornerRadius: Dp = 16.dp,
+    isConnected: Boolean = false
 ) {
     Card(
         modifier = modifier
@@ -61,8 +66,12 @@ fun DeviceCard(
                     text = "RSSI: ${device.rssi}",
                     modifier = Modifier.padding(top = 8.dp)
                 )
+                val lastSeenDuration = Duration.between(
+                    Instant.ofEpochMilli(device.timestamp),
+                    Instant.now()
+                )
                 Text(
-                    text = "Last Seen: ${device.timestamp} sec ago",
+                    text = "Last seen: ${formatDuration(lastSeenDuration)}",
                     modifier = Modifier.padding(top = 8.dp)
                 )
             }
@@ -73,11 +82,30 @@ fun DeviceCard(
                     imageVector = Icons.Filled.Delete,
                     contentDescription = "Delete"
                 )
+
             }
+            Icon(
+                imageVector = if (isConnected) Icons.Filled.CheckCircle else Icons.Outlined.CheckCircle,
+                tint = if (isConnected) Color.Green else Color.Gray,
+                contentDescription = if (isConnected) "Connected" else "Not connected",
+                modifier = Modifier.size(24.dp)
+            )
         }
     }
 }
 
+private fun formatDuration(duration: Duration): String {
+    val days = duration.toDays()
+    val hours = duration.toHours() % 24
+    val minutes = duration.toMinutes() % 60
+
+    return when {
+        days > 0 -> "$days day${if (days > 1) "s" else ""} ago"
+        hours > 0 -> "$hours hour${if (hours > 1) "s" else ""} ago"
+        minutes > 0 -> "$minutes minute${if (minutes > 1) "s" else ""} ago"
+        else -> "just now"
+    }
+}
 
 
 @Preview(showBackground = true)
@@ -89,8 +117,10 @@ fun PreviewDeviceCard(){
             device_name = "Test Device",
             rssi = -50,
             distance = 10,
-            timestamp = 0,
-            isDone = false
+            timestamp = System.currentTimeMillis() - 9000,
+            isDone = false,
+            isConnected = true,
+            batteryLevel = 100
         ),
         onEvent = {}
     )
