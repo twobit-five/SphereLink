@@ -29,7 +29,6 @@ fun DeviceCard(
     onEvent: (DeviceListEvent) -> Unit,
     modifier: Modifier = Modifier,
     cornerRadius: Dp = 16.dp,
-    isConnected: Boolean = false
 ) {
     Card(
         modifier = modifier
@@ -85,9 +84,9 @@ fun DeviceCard(
 
             }
             Icon(
-                imageVector = if (isConnected) Icons.Filled.CheckCircle else Icons.Outlined.CheckCircle,
-                tint = if (isConnected) Color.Green else Color.Gray,
-                contentDescription = if (isConnected) "Connected" else "Not connected",
+                imageVector = if (device.isConnected) Icons.Filled.CheckCircle else Icons.Outlined.CheckCircle,
+                tint = if (device.isConnected) Color.Green else Color.Gray,
+                contentDescription = if (device.isConnected) "Connected" else "Not connected",
                 modifier = Modifier.size(24.dp)
             )
         }

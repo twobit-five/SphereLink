@@ -4,6 +4,7 @@ import com.example.spherelink.data.entities.DeviceEntity
 import kotlinx.coroutines.flow.Flow
 
 interface DeviceRepository {
+    suspend fun getDeviceById(id: Int): DeviceEntity
     suspend fun insertDevice(device: DeviceEntity): Long
 
     suspend fun deleteDevice(device: DeviceEntity)

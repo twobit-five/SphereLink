@@ -8,6 +8,10 @@ class DeviceRepositoryImpl (
     private val deviceDao: DeviceDao
 ): DeviceRepository {
 
+    override suspend fun getDeviceById(id: Int): DeviceEntity {
+        return deviceDao.getDeviceById(id)
+    }
+
     override suspend fun insertDevice(device: DeviceEntity): Long {
         return deviceDao.insertDevice(device)
     }

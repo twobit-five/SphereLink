@@ -6,6 +6,10 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface DeviceDao {
+
+    @Query("SELECT * FROM rssi_table WHERE id = :id")
+    suspend fun getDeviceById(id: Int): DeviceEntity
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertDevice(deviceEntity: DeviceEntity): Long
 
@@ -33,8 +37,8 @@ interface DeviceDao {
     @Query("UPDATE rssi_table SET distance = :distance, timestamp = :timestamp WHERE address = :address")
     suspend fun updateDistance(address: String, distance: Int, timestamp: Long = System.currentTimeMillis())
 
-    @Query("UPDATE rssi_table SET isConnected = :isConnected, timestamp = :timestamp WHERE address = :address")
-    suspend fun updateIsConnected(address: String, isConnected: Boolean, timestamp: Long = System.currentTimeMillis())
+    @Query("UPDATE rssi_table SET isConnected = :isConnected WHERE address = :address")
+    suspend fun updateIsConnected(address: String, isConnected: Boolean)
 
     @Query("UPDATE rssi_table SET batteryLevel = :batteryLevel, timestamp = :timestamp WHERE address = :address")
     suspend fun updateBatteryLevel(address: String, batteryLevel: Int, timestamp: Long = System.currentTimeMillis())

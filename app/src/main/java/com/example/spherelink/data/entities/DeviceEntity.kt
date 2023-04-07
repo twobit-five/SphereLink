@@ -5,12 +5,13 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "rssi_table")
 data class DeviceEntity(
-    @PrimaryKey val address: String,
+    val address: String,
     val device_name: String,
     val rssi: Int,
     val distance: Int,
     val isDone: Boolean,
     val isConnected: Boolean,
     val timestamp: Long,
-    val batteryLevel: Int
+    val batteryLevel: Int,
+    @PrimaryKey val id: Int? = null
 )

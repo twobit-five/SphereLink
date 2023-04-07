@@ -13,7 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.spherelink.ui.add_edit_device.AddDeviceScreen
+import com.example.spherelink.ui.device_details.AddDeviceScreen
 import com.example.spherelink.ui.device_list.DeviceListScreen
 import com.example.spherelink.ui.theme.SphereLinkTheme
 import com.example.spherelink.util.Routes
@@ -72,9 +72,9 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                     composable(
-                        route = Routes.ADD_EDIT_DEVICE + "?deviceAddress={deviceAddress}",
+                        route = Routes.DEVICE_DETAILS + "?deviceAddress={deviceAddress}",
                         arguments = listOf(
-                            navArgument(name = "todoId") {
+                            navArgument(name = "deviceId") {
                                 type = NavType.IntType
                                 defaultValue = -1
                             }
