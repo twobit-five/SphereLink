@@ -87,6 +87,7 @@ class BluetoothService (): Service() {
 
         // Stop the service as a foreground service and remove the notification
         stopForeground(true)
+        unregisterReceiver(bluetoothBroadcastReceiver)
     }
 
     private fun createNotification(): Notification {
