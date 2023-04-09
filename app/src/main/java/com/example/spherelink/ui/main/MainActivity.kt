@@ -59,32 +59,9 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 )
-                val navController = rememberNavController()
-                NavHost(
-                    navController = navController,
-                    startDestination = Routes.DEVICE_LIST
-                ) {
-                    composable(Routes.DEVICE_LIST) {
-                        DeviceListScreen(
-                            onNavigate = {
-                                navController.navigate(it.route)
-                            }
-                        )
-                    }
-                    composable(
-                        route = Routes.ADD_EDIT_DEVICE + "?deviceAddress={deviceAddress}",
-                        arguments = listOf(
-                            navArgument(name = "todoId") {
-                                type = NavType.IntType
-                                defaultValue = -1
-                            }
-                        )
-                    ) {
-                        AddDeviceScreen(onPopBackStack = {
-                            navController.popBackStack()
-                        })
-                    }
-                }
+
+                Navigation()
+
                 LaunchedEffect(Unit) {
                     // Launch permissions request here
                     multiplePermissionResultLauncher.launch(permissionsToRequest)

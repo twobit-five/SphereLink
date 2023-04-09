@@ -1,6 +1,7 @@
 package com.example.spherelink.data.repository
 
 import com.example.spherelink.data.entities.DeviceEntity
+import com.example.spherelink.data.entities.RssiValue
 import kotlinx.coroutines.flow.Flow
 
 interface DeviceRepository {
@@ -25,4 +26,8 @@ interface DeviceRepository {
     suspend fun getDistance(address: String): Int
 
     suspend fun updateBatteryLevel(address: String, batteryLevel: Int)
+
+    suspend fun insertRssiValueWithLimit(rssiValue: RssiValue, limit: Int)
+
+    suspend fun getRssiValuesForDevice(deviceAddress: String): List<RssiValue>
 }

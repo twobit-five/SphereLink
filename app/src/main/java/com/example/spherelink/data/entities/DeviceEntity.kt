@@ -3,7 +3,7 @@ package com.example.spherelink.data.entities
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "rssi_table")
+@Entity(tableName = "device_table")
 data class DeviceEntity(
     @PrimaryKey val address: String,
     val device_name: String,

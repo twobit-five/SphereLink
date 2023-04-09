@@ -2,54 +2,72 @@ package com.example.spherelink.data.repository
 
 import com.example.spherelink.data.dao.DeviceDao
 import com.example.spherelink.data.entities.DeviceEntity
+import com.example.spherelink.data.entities.RssiValue
 import kotlinx.coroutines.flow.Flow
 
 class DeviceRepositoryImpl (
-    private val deviceDao: DeviceDao
+    private val dao: DeviceDao
 ): DeviceRepository {
 
+    // TODO Rename functions to better distinguish between device and
     override suspend fun insertDevice(device: DeviceEntity): Long {
-        return deviceDao.insertDevice(device)
+        return dao.insertDevice(device)
     }
 
     override suspend fun deleteDevice(device: DeviceEntity) {
-        deviceDao.deleteDevice(device)
+        dao.deleteDevice(device)
     }
 
     override suspend fun getDeviceByAddress(address: String): DeviceEntity {
-        return deviceDao.getDeviceByAddress(address)
+        return dao.getDeviceByAddress(address)
     }
 
     override fun getAllDevices(): Flow<List<DeviceEntity>> {
-        return deviceDao.getAllDevices()
+        return dao.getAllDevices()
     }
 
     override fun getDevicesAsList(): List<DeviceEntity>
     {
-        return deviceDao.getDevicesAsList()
+        return dao.getDevicesAsList()
     }
 
     override suspend fun getDistance(address: String): Int {
-        return deviceDao.getDistance(address)
+        return dao.getDistance(address)
     }
 
     override suspend fun getBatteryLevel(address: String): Int {
-        return deviceDao.getBatteryLevel(address)
+        return dao.getBatteryLevel(address)
     }
 
     override suspend fun updateRssi(address: String, rssi: Int) {
-        deviceDao.updateRssi(address, rssi)
+        dao.updateRssi(address, rssi)
     }
 
     override suspend fun updateDistance(address: String, distance: Int) {
-        deviceDao.updateDistance(address, distance)
+        dao.updateDistance(address, distance)
     }
 
     override suspend fun updateIsConnected(address: String, isConnected: Boolean) {
-        deviceDao.updateIsConnected(address, isConnected)
+        dao.updateIsConnected(address, isConnected)
     }
 
     override suspend fun updateBatteryLevel(address: String, batteryLevel: Int) {
-        deviceDao.updateBatteryLevel(address, batteryLevel)
+        dao.updateBatteryLevel(address, batteryLevel)
+    }
+
+
+    override suspend fun insertRssiValueWithLimit(rssiValue: RssiValue, limit: Int) {
+        val rssiValues = dao.getRssiValuesForDevice(rssiValue.deviceAddress)
+        if (rssiValues.size >= limit) {
+            val toDelete = rssiValues.size - limit + 1
+            for (i in 0 until toDelete) {
+                dao.deleteRssiValue(rssiValues[i].id)
+            }
+        }
+        dao.insertRssiValue(rssiValue)
+    }
+
+    override suspend fun getRssiValuesForDevice(deviceAddress: String): List<RssiValue> {
+        return dao.getRssiValuesForDevice(deviceAddress)
     }
 }

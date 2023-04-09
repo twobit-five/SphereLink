@@ -3,11 +3,9 @@ package com.example.spherelink.di
 import android.app.Application
 import android.content.Context
 import androidx.room.Room
-import com.example.spherelink.data.database.RssiDatabase
+import com.example.spherelink.data.database.AppDatabase
 import com.example.spherelink.data.repository.DeviceRepository
 import com.example.spherelink.data.repository.DeviceRepositoryImpl
-import com.example.spherelink.domain.distance.DistanceCalculator
-import com.example.spherelink.domain.distance.DistanceCalculatorImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,17 +24,17 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideAppDatabase(app: Application) : RssiDatabase {
+    fun provideAppDatabase(app: Application) : AppDatabase {
         return Room.databaseBuilder(
             app,
-            RssiDatabase::class.java,
-            "rssi_database",
+            AppDatabase::class.java,
+            "app_database",
         ).build()
     }
 
     @Provides
     @Singleton
-    fun providesDeviceRepository(db: RssiDatabase): DeviceRepository {
+    fun providesDeviceRepository(db: AppDatabase): DeviceRepository {
         return DeviceRepositoryImpl(db.deviceDao())
     }
 }
