@@ -1,5 +1,6 @@
 package com.example.spherelink.ui.add_edit_device
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -72,6 +73,10 @@ class AddEditDeviceViewModel @Inject constructor(
                     )
                     sendUiEvent(UiEvent.PopBackStack)
                 }
+            }
+            is AddEditDeviceEvent.OnQrCodeScanned -> {
+
+                Log.v("AddEditDeviceViewModel", "OnQrCodeScanned")
             }
         }
     }

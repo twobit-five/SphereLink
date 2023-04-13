@@ -20,14 +20,14 @@ import javax.inject.Inject
 import kotlinx.coroutines.*
 
 
-
+//TODO should probably make this service a singleton. :)
 @AndroidEntryPoint
 class BluetoothService (): Service() {
 
     private val TAG = "BluetoothService"
 
     @Inject
-    lateinit var connectionManager: DeviceManager
+    lateinit var deviceManager: DeviceManager
 
     @Inject
     lateinit var repository: DeviceRepository
@@ -47,7 +47,7 @@ class BluetoothService (): Service() {
 
     override fun onCreate() {
         super.onCreate()
-        connectionManager = DeviceManager(this, repository)
+        deviceManager = DeviceManager(this, repository)
 
         // Register Bluetooth broadcast receiver
         val intentFilter = IntentFilter().apply {
@@ -66,10 +66,12 @@ class BluetoothService (): Service() {
             Log.v(TAG,"BluetoothService isActive: ${job?.isActive}")
             while (isActive) {
                 val deviceList: List<DeviceEntity> = repository.getDevicesAsList()
-                connectionManager.setDeviceList(deviceList)
-                connectionManager.connectToAllDevices()
-                connectionManager.requestRSSIfromAllDevices()
+                deviceManager.setDeviceList(deviceList)
+                deviceManager.connectToAllDevices()
+                deviceManager.requestRSSIfromAllDevices()
 
+                // TODO add a variable delay which increases sample rate when in motion?
+                // Good starting point for static frequency is between 1-10 samples per second.
                 delay(delay)
             }
         }
@@ -80,7 +82,7 @@ class BluetoothService (): Service() {
     override fun onDestroy() {
         super.onDestroy()
         // Disconnect from all devices and release the resources
-        connectionManager.disconnectFromAllDevices()
+        deviceManager.disconnectFromAllDevices()
 
         // Cancel the coroutine job when the service is destroyed
         job?.cancel()

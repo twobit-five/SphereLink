@@ -29,6 +29,9 @@ class GattCallbackHandler(repository: DeviceRepository) : BluetoothGattCallback(
 
     @SuppressLint("MissingPermission")
     override fun onConnectionStateChange(gatt: BluetoothGatt, status: Int, newState: Int) {
+
+        val deviceAddress = gatt.device.address
+
         when (newState) {
             BluetoothProfile.STATE_CONNECTED -> {
 
@@ -38,9 +41,8 @@ class GattCallbackHandler(repository: DeviceRepository) : BluetoothGattCallback(
                     repository.updateIsConnected(deviceAddress, true)
                 }
 
-
-                Log.i(TAG, "Connected to GATT server.")
-                Log.i(TAG, "Attempting to start service discovery: ${gatt.discoverServices()}")
+                Log.i(TAG, "Device connected to GATT server. ${deviceAddress}")
+                gatt.discoverServices()
             }
             BluetoothProfile.STATE_DISCONNECTED -> {
                 val scope = CoroutineScope(Job() + Dispatchers.Main)
@@ -49,7 +51,7 @@ class GattCallbackHandler(repository: DeviceRepository) : BluetoothGattCallback(
                     repository.updateIsConnected(deviceAddress, false)
                 }
 
-                Log.i(TAG, "Disconnected from GATT server.")
+                Log.i(TAG, "Device disconnected from GATT server. ${deviceAddress}")
             }
         }
     }

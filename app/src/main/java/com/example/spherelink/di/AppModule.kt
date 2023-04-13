@@ -6,6 +6,7 @@ import androidx.room.Room
 import com.example.spherelink.data.database.AppDatabase
 import com.example.spherelink.data.repository.DeviceRepository
 import com.example.spherelink.data.repository.DeviceRepositoryImpl
+import com.example.spherelink.domain.bluetooth.DeviceManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -37,4 +38,13 @@ object AppModule {
     fun providesDeviceRepository(db: AppDatabase): DeviceRepository {
         return DeviceRepositoryImpl(db.deviceDao())
     }
+    @Provides
+    @Singleton
+    fun providesDeviceManager(
+        context: Context,
+        repository: DeviceRepository
+    ): DeviceManager {
+        return DeviceManager(context, repository)
+    }
+
 }

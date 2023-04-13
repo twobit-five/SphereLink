@@ -6,8 +6,9 @@ import android.content.Context
 import android.util.Log
 import com.example.spherelink.data.entities.DeviceEntity
 import com.example.spherelink.data.repository.DeviceRepository
+import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
-
+import javax.inject.Singleton
 
 class DeviceManager @Inject constructor(private val context: Context, private val repository: DeviceRepository) {
 
@@ -18,8 +19,8 @@ class DeviceManager @Inject constructor(private val context: Context, private va
 
     private val bluetoothAdapter: BluetoothAdapter? = bluetoothManager.adapter
 
-    private val gattCallbackMap: MutableMap<String, GattCallbackHandler> = mutableMapOf() // Map to store the callback for each device
-    private val gattMap: MutableMap<String, BluetoothGatt> = mutableMapOf()
+    private val gattCallbackMap: MutableMap<String, GattCallbackHandler> = ConcurrentHashMap()
+    private val gattMap: MutableMap<String, BluetoothGatt> = ConcurrentHashMap()
 
 
     fun setDeviceList(targetDeviceList: List<DeviceEntity>) {
@@ -27,7 +28,6 @@ class DeviceManager @Inject constructor(private val context: Context, private va
     }
 
     fun updateDeviceList(newDeviceList: List<DeviceEntity>) {
-
         for (device in newDeviceList) {
             if (!gattCallbackMap.containsKey(device.address)) {
                 gattCallbackMap[device.address] = GattCallbackHandler(repository)
@@ -42,6 +42,8 @@ class DeviceManager @Inject constructor(private val context: Context, private va
         gattCallbackMap.keys.forEach { address ->
             if (!isDeviceConnected(address))
                 connectToDevice(address)
+            else
+                Log.v(TAG, "Device already connected: $address")
         }
     }
 
@@ -85,10 +87,7 @@ class DeviceManager @Inject constructor(private val context: Context, private va
 
     fun requestRSSIfromAllDevices() {
         gattMap.keys.forEach { macAddress ->
-
-            Log.v(TAG, "Attempting to request RSSI from $macAddress")
             val device = bluetoothAdapter?.getRemoteDevice(macAddress)
-
             if (device != null) {
                 requestRssiFromDevice(device)
             }
@@ -121,4 +120,6 @@ class DeviceManager @Inject constructor(private val context: Context, private va
             disconnectDevice(macAddress)
         }
     }
+
+    //TODO should we call back into the DeviceManager to remove the device from the map after disconnection events?
 }

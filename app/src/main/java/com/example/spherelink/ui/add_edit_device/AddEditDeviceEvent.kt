@@ -4,4 +4,7 @@ sealed class AddEditDeviceEvent {
     data class OnDeviceAddressChange(val deviceAddress: String): AddEditDeviceEvent()
     //data class OnDeviceNameChange(val deviceName: String): AddEditDeviceEvent()
     object OnSaveTodoClick: AddEditDeviceEvent()
+
+    object OnQrCodeScanned: AddEditDeviceEvent()
+
 }

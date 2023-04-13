@@ -1,22 +1,35 @@
 package com.example.spherelink.ui.add_edit_device
 
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Phone
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.spherelink.util.UiEvent
 
+
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun AddDeviceScreen(
     onPopBackStack: () -> Unit,
     viewModel: AddEditDeviceViewModel = hiltViewModel()
 ) {
     val scaffoldState = rememberScaffoldState()
+
+    //TODO need to add logic to handle the camera button
+
     LaunchedEffect(key1 = true) {
         viewModel.uiEvent.collect { event ->
             when(event) {
@@ -37,13 +50,32 @@ fun AddDeviceScreen(
             .fillMaxSize()
             .padding(16.dp),
         floatingActionButton = {
-            FloatingActionButton(onClick = {
-                viewModel.onEvent(AddEditDeviceEvent.OnSaveTodoClick)
-            }) {
-                Icon(
-                    imageVector = Icons.Default.Check,
-                    contentDescription = "Save"
-                )
+            Box {
+                FloatingActionButton(
+                    onClick = {
+                        viewModel.onEvent(AddEditDeviceEvent.OnSaveTodoClick)
+                    },
+                    modifier = Modifier.align(Alignment.BottomEnd)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Check,
+                        contentDescription = "Save"
+                    )
+                }
+                FloatingActionButton(
+                    onClick = {
+                        // Handle camera button click here
+                        viewModel.onEvent(AddEditDeviceEvent.OnQrCodeScanned)
+                    },
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .offset(y = (-56 - 16).dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Phone,
+                        contentDescription = "Camera"
+                    )
+                }
             }
         }
     ) {
@@ -61,6 +93,8 @@ fun AddDeviceScreen(
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(8.dp))
+
         }
     }
 }
+

@@ -27,9 +27,9 @@ fun Navigation() {
         composable(
             route = Routes.ADD_EDIT_DEVICE + "?deviceAddress={deviceAddress}",
             arguments = listOf(
-                navArgument(name = "todoId") {
-                    type = NavType.IntType
-                    defaultValue = -1
+                navArgument(name = "deviceAddress") {
+                    type = NavType.StringType
+                    defaultValue = ""
                 }
             )
         ) {

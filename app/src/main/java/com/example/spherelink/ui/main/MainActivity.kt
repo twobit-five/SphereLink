@@ -8,16 +8,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import com.example.spherelink.ui.add_edit_device.AddDeviceScreen
-import com.example.spherelink.ui.device_list.DeviceListScreen
 import com.example.spherelink.ui.theme.SphereLinkTheme
-import com.example.spherelink.util.Routes
-import dagger.hilt.android.AndroidEntryPoint
 import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -25,7 +16,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.core.content.ContextCompat
 import com.example.spherelink.domain.bluetooth.BluetoothService
 import com.example.spherelink.ui.permission.*
-
+import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -38,6 +29,7 @@ class MainActivity : ComponentActivity() {
         Manifest.permission.BLUETOOTH_CONNECT,
         //Manifest.permission.ACCESS_FINE_LOCATION,
         //Manifest.permission.ACCESS_COARSE_LOCATION
+        Manifest.permission.CAMERA
     )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
