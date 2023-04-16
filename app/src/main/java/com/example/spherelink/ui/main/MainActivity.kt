@@ -14,6 +14,8 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.LaunchedEffect
 import androidx.core.content.ContextCompat
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.spherelink.domain.bluetooth.BluetoothService
 import com.example.spherelink.ui.permission.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,6 +24,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private var isBluetoothServiceRunning = false
+    lateinit var  navController: NavHostController
 
     private val permissionsToRequest = arrayOf(
         Manifest.permission.BLUETOOTH_ADMIN,
@@ -52,7 +55,8 @@ class MainActivity : ComponentActivity() {
                     }
                 )
 
-                Navigation()
+                navController = rememberNavController()
+                SetupNavGraph(navController)
 
                 LaunchedEffect(Unit) {
                     // Launch permissions request here

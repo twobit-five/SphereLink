@@ -29,9 +29,7 @@ class GattCallbackHandler(repository: DeviceRepository) : BluetoothGattCallback(
 
     @SuppressLint("MissingPermission")
     override fun onConnectionStateChange(gatt: BluetoothGatt, status: Int, newState: Int) {
-
         val deviceAddress = gatt.device.address
-
         when (newState) {
             BluetoothProfile.STATE_CONNECTED -> {
 
@@ -72,19 +70,28 @@ class GattCallbackHandler(repository: DeviceRepository) : BluetoothGattCallback(
 
     override fun onCharacteristicRead(gatt: BluetoothGatt?, characteristic: BluetoothGattCharacteristic?, status: Int) {
         if (status == BluetoothGatt.GATT_SUCCESS) {
+            val deviceAddress = gatt?.device?.address
             if (characteristic?.uuid == BATTERY_LEVEL_UUID) {
                 batteryLevel =
-                    characteristic?.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0) ?:
-                Log.d(TAG, "Battery level: $batteryLevel" )
+                    characteristic?.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0)!!
+                CoroutineScope(Dispatchers.IO).launch {
+                    repository.updateBatteryLevel(deviceAddress!!, batteryLevel)
+                }
+                Log.v(TAG, "Device: [${deviceAddress}], Battery level: $batteryLevel" )
             }
         }
     }
 
     override fun onCharacteristicChanged(gatt: BluetoothGatt?, characteristic: BluetoothGattCharacteristic?) {
         if (characteristic?.uuid == BATTERY_LEVEL_UUID) {
+            val deviceAddress = gatt?.device?.address
             batteryLevel =
-                characteristic?.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0) ?:
-            Log.d(TAG, "Battery level: $batteryLevel" )
+                characteristic?.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0)!!
+
+            CoroutineScope(Dispatchers.IO).launch {
+                repository.updateBatteryLevel(deviceAddress!!, batteryLevel)
+            }
+            Log.v(TAG, "Device: [${deviceAddress}], Battery level: $batteryLevel" )
         }
     }
 

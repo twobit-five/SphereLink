@@ -9,7 +9,6 @@ class DeviceRepositoryImpl (
     private val dao: DeviceDao
 ): DeviceRepository {
 
-    // TODO Rename functions to better distinguish between device and
     override suspend fun insertDevice(device: DeviceEntity): Long {
         return dao.insertDevice(device)
     }
@@ -39,6 +38,10 @@ class DeviceRepositoryImpl (
         return dao.getBatteryLevel(address)
     }
 
+    override suspend fun updateDeviceName(address: String, deviceName: String) {
+        dao.updateDeviceName(address, deviceName)
+    }
+
     override suspend fun updateRssi(address: String, rssi: Int) {
         dao.updateRssi(address, rssi)
     }
@@ -57,7 +60,7 @@ class DeviceRepositoryImpl (
 
 
     override suspend fun insertRssiValueWithLimit(rssiValue: RssiValue, limit: Int) {
-        val rssiValues = dao.getRssiValuesForDevice(rssiValue.deviceAddress)
+        val rssiValues = dao.getDeviceHistoryList(rssiValue.deviceAddress)
         if (rssiValues.size >= limit) {
             val toDelete = rssiValues.size - limit + 1
             for (i in 0 until toDelete) {
@@ -67,7 +70,7 @@ class DeviceRepositoryImpl (
         dao.insertRssiValue(rssiValue)
     }
 
-    override suspend fun getRssiValuesForDevice(deviceAddress: String): List<RssiValue> {
-        return dao.getRssiValuesForDevice(deviceAddress)
+    override fun getDeviceHistory(deviceAddress: String): Flow<List<RssiValue>> {
+        return dao.getDeviceHistory(deviceAddress)
     }
 }

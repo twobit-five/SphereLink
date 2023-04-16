@@ -28,6 +28,9 @@ interface DeviceDao {
     @Query("SELECT batteryLevel FROM device_table WHERE address = :address")
     suspend fun getBatteryLevel(address: String): Int
 
+    @Query("Update device_table SET device_name = :deviceName WHERE address = :address")
+    suspend fun updateDeviceName(address: String, deviceName: String)
+
     @Query("UPDATE device_table SET rssi = :rssi, timestamp = :timestamp WHERE address = :address")
     suspend fun updateRssi(address: String, rssi: Int, timestamp: Long = System.currentTimeMillis())
 
@@ -44,7 +47,10 @@ interface DeviceDao {
     // Device History Table
 
     @Query("SELECT * FROM device_history WHERE deviceAddress = :deviceAddress ORDER BY timestamp DESC")
-    fun getRssiValuesForDevice(deviceAddress: String): List<RssiValue>
+    fun getDeviceHistory(deviceAddress: String): Flow<List<RssiValue>>
+
+    @Query("SELECT * FROM device_history WHERE deviceAddress = :deviceAddress ORDER BY timestamp DESC")
+    fun getDeviceHistoryList(deviceAddress: String): List<RssiValue>
 
     @Insert
     fun insertRssiValue(rssiValue: RssiValue)

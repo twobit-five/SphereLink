@@ -46,5 +46,4 @@ object AppModule {
     ): DeviceManager {
         return DeviceManager(context, repository)
     }
-
 }

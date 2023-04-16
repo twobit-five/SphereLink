@@ -1,11 +1,6 @@
-package com.example.spherelink.ui.add_edit_device
+package com.example.spherelink.ui.add_device
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.Intent
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -24,7 +19,7 @@ import com.example.spherelink.util.UiEvent
 @Composable
 fun AddDeviceScreen(
     onPopBackStack: () -> Unit,
-    viewModel: AddEditDeviceViewModel = hiltViewModel()
+    viewModel: AddDeviceViewModel = hiltViewModel()
 ) {
     val scaffoldState = rememberScaffoldState()
 
@@ -53,7 +48,7 @@ fun AddDeviceScreen(
             Box {
                 FloatingActionButton(
                     onClick = {
-                        viewModel.onEvent(AddEditDeviceEvent.OnSaveTodoClick)
+                        viewModel.onEvent(AddDeviceEvent.OnSaveTodoClick)
                     },
                     modifier = Modifier.align(Alignment.BottomEnd)
                 ) {
@@ -65,7 +60,7 @@ fun AddDeviceScreen(
                 FloatingActionButton(
                     onClick = {
                         // Handle camera button click here
-                        viewModel.onEvent(AddEditDeviceEvent.OnQrCodeScanned)
+                        viewModel.onEvent(AddDeviceEvent.OnQrCodeScanned)
                     },
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
@@ -85,7 +80,7 @@ fun AddDeviceScreen(
             TextField(
                 value = viewModel.deviceAddress,
                 onValueChange = {
-                    viewModel.onEvent(AddEditDeviceEvent.OnDeviceAddressChange(it))
+                    viewModel.onEvent(AddDeviceEvent.OnDeviceAddressChange(it))
                 },
                 placeholder = {
                     Text(text = "Device Address")
@@ -93,7 +88,6 @@ fun AddDeviceScreen(
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(8.dp))
-
         }
     }
 }

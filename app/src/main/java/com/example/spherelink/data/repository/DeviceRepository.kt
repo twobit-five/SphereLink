@@ -16,7 +16,7 @@ interface DeviceRepository {
     fun getDevicesAsList(): List<DeviceEntity>
 
     suspend fun getBatteryLevel(address: String): Int
-
+    suspend fun updateDeviceName(address: String, deviceName: String)
     suspend fun updateRssi(address: String, rssi: Int)
 
     suspend fun updateDistance(address: String, distance: Int)
@@ -29,5 +29,5 @@ interface DeviceRepository {
 
     suspend fun insertRssiValueWithLimit(rssiValue: RssiValue, limit: Int)
 
-    suspend fun getRssiValuesForDevice(deviceAddress: String): List<RssiValue>
+    fun getDeviceHistory(deviceAddress: String): Flow<List<RssiValue>>
 }

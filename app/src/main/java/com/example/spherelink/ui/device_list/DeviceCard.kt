@@ -29,7 +29,6 @@ fun DeviceCard(
     onEvent: (DeviceListEvent) -> Unit,
     modifier: Modifier = Modifier,
     cornerRadius: Dp = 16.dp,
-    isConnected: Boolean = false
 ) {
     Card(
         modifier = modifier
@@ -82,7 +81,6 @@ fun DeviceCard(
                     imageVector = Icons.Filled.Delete,
                     contentDescription = "Delete"
                 )
-
             }
             Icon(
                 imageVector = if (device.isConnected) Icons.Filled.CheckCircle else Icons.Outlined.CheckCircle,

@@ -1,5 +1,6 @@
 package com.example.spherelink.ui.device_list
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.spherelink.util.UiEvent
@@ -11,6 +12,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import com.example.spherelink.util.Routes
 import com.example.spherelink.data.entities.DeviceEntity
+import com.example.spherelink.util.Screen
 
 @HiltViewModel
 class DeviceListViewModel @Inject constructor(
@@ -27,10 +29,14 @@ class DeviceListViewModel @Inject constructor(
     fun onEvent(event: DeviceListEvent) {
         when (event) {
             is DeviceListEvent.OnAddDeviceClick -> {
-                sendUiEvent(UiEvent.Navigate(Routes.ADD_EDIT_DEVICE))
+                sendUiEvent(UiEvent.Navigate(Screen.AddDevice.route))
             }
             is DeviceListEvent.OnDeviceClick -> {
-                sendUiEvent(UiEvent.Navigate(Routes.ADD_EDIT_DEVICE))
+                //sendUiEvent(UiEvent.Navigate(Routes.DeviceDetails + "/${event.device.id}"))
+                //this is where we need to send the device id to the device details screen
+                Log.v("DeviceListViewModel", "Device clicked: ${event.device.address}")
+                Log.v("DeviceListViewModel", "Device arguments: ${Screen.DeviceDetails.passAddress(event.device.address)}")
+                sendUiEvent(UiEvent.Navigate(Screen.DeviceDetails.passAddress(event.device.address)))
             }
             is DeviceListEvent.OnDeleteDeviceClick -> {
                 viewModelScope.launch {

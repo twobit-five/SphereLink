@@ -1,4 +1,4 @@
-package com.example.spherelink.ui.add_edit_device
+package com.example.spherelink.ui.add_device
 
 import android.util.Log
 import androidx.compose.runtime.getValue
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AddEditDeviceViewModel @Inject constructor(
+class AddDeviceViewModel @Inject constructor(
     private val repository: DeviceRepository,
     savedStateHandle: SavedStateHandle
 ): ViewModel() {
@@ -37,21 +37,21 @@ class AddEditDeviceViewModel @Inject constructor(
             viewModelScope.launch {
                 repository.getDeviceByAddress(address).let { deviceEntity ->
                     deviceAddress = deviceEntity.address
-                    this@AddEditDeviceViewModel.device = device
+                    this@AddDeviceViewModel.device = device
                 }
             }
         }
     }
 
-    fun onEvent(event: AddEditDeviceEvent) {
+    fun onEvent(event: AddDeviceEvent) {
         when(event) {
-            is AddEditDeviceEvent.OnDeviceAddressChange -> {
+            is AddDeviceEvent.OnDeviceAddressChange -> {
                 deviceAddress = event.deviceAddress
             }
             //is AddEditDeviceEvent.OnDeviceNameChange -> {
             //    deviceName = event.deviceName
             //}
-            is AddEditDeviceEvent.OnSaveTodoClick -> {
+            is AddDeviceEvent.OnSaveTodoClick -> {
                 viewModelScope.launch {
                     if(deviceAddress.isBlank()) {
                         sendUiEvent(UiEvent.ShowSnackbar(
@@ -74,7 +74,7 @@ class AddEditDeviceViewModel @Inject constructor(
                     sendUiEvent(UiEvent.PopBackStack)
                 }
             }
-            is AddEditDeviceEvent.OnQrCodeScanned -> {
+            is AddDeviceEvent.OnQrCodeScanned -> {
 
                 Log.v("AddEditDeviceViewModel", "OnQrCodeScanned")
             }
