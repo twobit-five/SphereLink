@@ -2,7 +2,7 @@ package com.example.spherelink.domain.distance
 
 import android.util.Log
 import com.example.spherelink.data.entities.RssiValue
-import com.example.spherelink.data.repository.DeviceRepository
+import com.example.spherelink.domain.repo.DeviceRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -12,7 +12,8 @@ import kotlin.math.pow
 private const val TAG = "DistanceCalculatorImpl"
 
 private const val attenValue = 2.4
-// Calibration constant for RSSI at 1 meter
+//TODO  Calibration constant for RSSI at 1 meter to increase accuracy.
+//NEED TO GET THIS FROM THE DEVICE, represented as TX power
 private const val baseRssi = -58
 private const val alphaWeight = 0.4
 
@@ -25,7 +26,7 @@ class DistanceCalculatorImpl @Inject constructor(private val repository: DeviceR
 
         CoroutineScope(Dispatchers.IO).launch {
 
-            // TODO some devices send the calibration constant in the manufacturer data, use that instead of the default value
+            //TODO some devices send the calibration constant in the manufacturer data, use that instead of the default value
             val distance = 10.0.pow((baseRssi - currentRSSI) / (10 * attenValue))
             val oldDistance = repository.getDistance(deviceAddress)
             val newDistance = ((alphaWeight * distance) + ((1 - alphaWeight) * oldDistance)).toInt()

@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Context
 import androidx.room.Room
 import com.example.spherelink.data.database.AppDatabase
-import com.example.spherelink.data.repository.DeviceRepository
+import com.example.spherelink.domain.repo.DeviceRepository
 import com.example.spherelink.data.repository.DeviceRepositoryImpl
 import com.example.spherelink.domain.bluetooth.DeviceManager
 import dagger.Module

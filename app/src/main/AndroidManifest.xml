@@ -10,10 +10,6 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.any" />
-
     <application
         android:name=".SphereLinkApp"
         android:allowBackup="false"
@@ -24,6 +20,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SphereLink"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.google.mlkit.vision.DEPENDENCIES"
+            android:value="barcode_ui"/>
 
         <service android:name=".domain.bluetooth.BluetoothService" />
 

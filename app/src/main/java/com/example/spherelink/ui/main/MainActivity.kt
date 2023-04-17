@@ -59,7 +59,6 @@ class MainActivity : ComponentActivity() {
                 SetupNavGraph(navController)
 
                 LaunchedEffect(Unit) {
-                    // Launch permissions request here
                     multiplePermissionResultLauncher.launch(permissionsToRequest)
                 }
 
@@ -128,3 +127,4 @@ fun Activity.openAppSettings() {
         Uri.fromParts("package", packageName, null)
     ).also(::startActivity)
 }
+

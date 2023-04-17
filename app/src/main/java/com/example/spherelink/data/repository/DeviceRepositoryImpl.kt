@@ -3,6 +3,7 @@ package com.example.spherelink.data.repository
 import com.example.spherelink.data.dao.DeviceDao
 import com.example.spherelink.data.entities.DeviceEntity
 import com.example.spherelink.data.entities.RssiValue
+import com.example.spherelink.domain.repo.DeviceRepository
 import kotlinx.coroutines.flow.Flow
 
 class DeviceRepositoryImpl (

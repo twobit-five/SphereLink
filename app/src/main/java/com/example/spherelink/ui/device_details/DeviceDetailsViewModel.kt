@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.spherelink.data.entities.DeviceEntity
 import com.example.spherelink.data.entities.RssiValue
-import com.example.spherelink.data.repository.DeviceRepository
+import com.example.spherelink.domain.repo.DeviceRepository
 import com.example.spherelink.util.DEVICE_DETAIL_ARGUMENT_KEY
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

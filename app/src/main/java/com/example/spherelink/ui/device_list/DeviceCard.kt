@@ -56,7 +56,7 @@ fun DeviceCard(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = "Distance: ${device.distance} ft",
+                    text = "Distance: ${device.distance} m",
                     fontWeight = FontWeight.Bold,
                     maxLines = 1,
                     modifier = Modifier.fillMaxWidth()

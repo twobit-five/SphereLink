@@ -7,7 +7,9 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface DeviceDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+
+    //TODO need to catch failure and throw a toast when device exists.
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertDevice(deviceEntity: DeviceEntity): Long
 
     @Delete

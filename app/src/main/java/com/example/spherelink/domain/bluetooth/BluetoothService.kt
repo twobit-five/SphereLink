@@ -14,7 +14,7 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.example.spherelink.R
 import com.example.spherelink.data.entities.DeviceEntity
-import com.example.spherelink.data.repository.DeviceRepository
+import com.example.spherelink.domain.repo.DeviceRepository
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlinx.coroutines.*
@@ -71,7 +71,7 @@ class BluetoothService (): Service() {
                 deviceManager.requestRSSIfromAllDevices()
 
                 // TODO add a variable delay which increases sample rate when in motion?
-                // Good starting point for static frequency is between 1-10 samples per second.
+                // ood starting point for static frequency is between 1-10 samples per second.
                 delay(delay)
             }
         }

@@ -4,13 +4,12 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.spherelink.util.UiEvent
-import com.example.spherelink.data.repository.DeviceRepository
+import com.example.spherelink.domain.repo.DeviceRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import com.example.spherelink.util.Routes
 import com.example.spherelink.data.entities.DeviceEntity
 import com.example.spherelink.util.Screen
 

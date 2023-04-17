@@ -1,4 +1,4 @@
-package com.example.spherelink.data.repository
+package com.example.spherelink.domain.repo
 
 import com.example.spherelink.data.entities.DeviceEntity
 import com.example.spherelink.data.entities.RssiValue

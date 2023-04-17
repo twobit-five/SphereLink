@@ -21,6 +21,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.spherelink.data.entities.DeviceEntity
 import com.example.spherelink.data.entities.RssiValue
 
+private const val METERS_IN_FEET = 3.28084
+
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun DeviceDetailsScreen(
@@ -39,8 +41,9 @@ fun DeviceDetailsScreen(
                 Text(text = "Device Name: ${device?.device_name}")
                 Text(text = "Device Address: ${device?.address}")
                 Text(text = "RSSI: ${device?.rssi}")
-                Text(text = "Distance: ${device?.distance}")
+                Text(text = "Distance: ${device?.distance} m")
                 Text(text = "Is Connected: ${device?.isConnected}")
+                //TODO convert timestamp to date/time format
                 Text(text = "Timestamp: ${device?.timestamp}")
                 Text(text = "Battery Level: ${device?.batteryLevel}%")
             }

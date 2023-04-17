@@ -3,7 +3,7 @@ package com.example.spherelink.domain.bluetooth
 import android.annotation.SuppressLint
 import android.bluetooth.*
 import android.util.Log
-import com.example.spherelink.data.repository.DeviceRepository
+import com.example.spherelink.domain.repo.DeviceRepository
 import com.example.spherelink.domain.distance.DistanceCalculator
 import com.example.spherelink.domain.distance.DistanceCalculatorImpl
 import kotlinx.coroutines.CoroutineScope
@@ -36,7 +36,12 @@ class GattCallbackHandler(repository: DeviceRepository) : BluetoothGattCallback(
                 val scope = CoroutineScope(Job() + Dispatchers.Main)
                 scope.launch(Dispatchers.IO) {
                     val deviceAddress = gatt.device.address
+                    val deviceName = gatt.device.name
                     repository.updateIsConnected(deviceAddress, true)
+
+                    if (deviceName != null) {
+                            repository.updateDeviceName(deviceAddress, deviceName)
+                        }
                 }
 
                 Log.i(TAG, "Device connected to GATT server. ${deviceAddress}")

@@ -1,6 +1,10 @@
 package com.example.spherelink.ui.add_device
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -10,8 +14,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import com.example.spherelink.util.Screen
 import com.example.spherelink.util.UiEvent
 
 
@@ -19,6 +26,7 @@ import com.example.spherelink.util.UiEvent
 @Composable
 fun AddDeviceScreen(
     onPopBackStack: () -> Unit,
+    navController: NavController,
     viewModel: AddDeviceViewModel = hiltViewModel()
 ) {
     val scaffoldState = rememberScaffoldState()
@@ -60,7 +68,7 @@ fun AddDeviceScreen(
                 FloatingActionButton(
                     onClick = {
                         // Handle camera button click here
-                        viewModel.onEvent(AddDeviceEvent.OnQrCodeScanned)
+                      viewModel.onEvent(AddDeviceEvent.OnQrCodeScanned)
                     },
                     modifier = Modifier
                         .align(Alignment.BottomEnd)

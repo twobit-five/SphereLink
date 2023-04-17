@@ -5,13 +5,12 @@ import android.bluetooth.*
 import android.content.Context
 import android.util.Log
 import com.example.spherelink.data.entities.DeviceEntity
-import com.example.spherelink.data.repository.DeviceRepository
+import com.example.spherelink.domain.repo.DeviceRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
-import javax.inject.Singleton
 
 class DeviceManager @Inject constructor(private val context: Context, private val repository: DeviceRepository) {
 
@@ -62,10 +61,6 @@ class DeviceManager @Inject constructor(private val context: Context, private va
                 // connect to the GATT server on the device
                 var bluetoothGatt = device.connectGatt(context, false, gattCallback)
                 gattMap[address] = bluetoothGatt
-
-                CoroutineScope(Dispatchers.IO).launch {
-                    repository.updateDeviceName(address, device.name)
-                }
 
                 return true
             } catch (exception: IllegalArgumentException) {

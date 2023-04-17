@@ -1,6 +1,5 @@
 package com.example.spherelink.ui.add_device
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -8,10 +7,13 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.spherelink.data.entities.DeviceEntity
-import com.example.spherelink.data.repository.DeviceRepository
+import com.example.spherelink.domain.repo.BarcodeRepository
+import com.example.spherelink.domain.repo.DeviceRepository
 import com.example.spherelink.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,6 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AddDeviceViewModel @Inject constructor(
     private val repository: DeviceRepository,
+    private val barcodeRepo : BarcodeRepository,
     savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
@@ -36,7 +39,7 @@ class AddDeviceViewModel @Inject constructor(
         if(address !=  "") {
             viewModelScope.launch {
                 repository.getDeviceByAddress(address).let { deviceEntity ->
-                    deviceAddress = deviceEntity.address
+                    //deviceAddress = deviceEntity.address
                     this@AddDeviceViewModel.device = device
                 }
             }
@@ -48,9 +51,6 @@ class AddDeviceViewModel @Inject constructor(
             is AddDeviceEvent.OnDeviceAddressChange -> {
                 deviceAddress = event.deviceAddress
             }
-            //is AddEditDeviceEvent.OnDeviceNameChange -> {
-            //    deviceName = event.deviceName
-            //}
             is AddDeviceEvent.OnSaveTodoClick -> {
                 viewModelScope.launch {
                     if(deviceAddress.isBlank()) {
@@ -75,15 +75,26 @@ class AddDeviceViewModel @Inject constructor(
                 }
             }
             is AddDeviceEvent.OnQrCodeScanned -> {
-
-                Log.v("AddEditDeviceViewModel", "OnQrCodeScanned")
+                startScanning()
             }
         }
     }
+
 
     private fun sendUiEvent(event: UiEvent) {
         viewModelScope.launch {
             _uiEvent.send(event)
         }
     }
+
+    fun startScanning(){
+        viewModelScope.launch {
+            barcodeRepo.startScanning().collect{
+                if (!it.isNullOrBlank()){
+                    deviceAddress = it
+                }
+            }
+        }
+    }
 }
+
