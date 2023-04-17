@@ -34,7 +34,7 @@ class BluetoothService (): Service() {
 
     private val bluetoothBroadcastReceiver = BluetoothBroadcastReceiver()
 
-    private val delay = 10000L // 10 seconds
+    private val delay = 500L // 10 seconds
     private val notificationId = 501 // unique ID for the notification
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
