@@ -30,4 +30,6 @@ interface DeviceRepository {
     suspend fun insertRssiValueWithLimit(rssiValue: RssiValue, limit: Int)
 
     fun getDeviceHistory(deviceAddress: String): Flow<List<RssiValue>>
+
+    suspend fun getDeviceHistoryList(deviceAddress: String): List<RssiValue>
 }

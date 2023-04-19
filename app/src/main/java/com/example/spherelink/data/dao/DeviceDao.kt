@@ -52,7 +52,7 @@ interface DeviceDao {
     fun getDeviceHistory(deviceAddress: String): Flow<List<RssiValue>>
 
     @Query("SELECT * FROM device_history WHERE deviceAddress = :deviceAddress ORDER BY timestamp DESC")
-    fun getDeviceHistoryList(deviceAddress: String): List<RssiValue>
+    suspend fun getDeviceHistoryList(deviceAddress: String): List<RssiValue>
 
     @Insert
     fun insertRssiValue(rssiValue: RssiValue)

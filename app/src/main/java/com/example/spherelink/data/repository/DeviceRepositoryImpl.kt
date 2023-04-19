@@ -59,6 +59,9 @@ class DeviceRepositoryImpl (
         dao.updateBatteryLevel(address, batteryLevel)
     }
 
+    override suspend fun getDeviceHistoryList(deviceAddress: String): List<RssiValue> {
+        return dao.getDeviceHistoryList(deviceAddress)
+    }
 
     override suspend fun insertRssiValueWithLimit(rssiValue: RssiValue, limit: Int) {
         val rssiValues = dao.getDeviceHistoryList(rssiValue.deviceAddress)
