@@ -4,9 +4,9 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "device_history")
-data class RssiValue (
+data class RssiValue(
     @PrimaryKey(autoGenerate = true) val id: Int=0,
     val timestamp: Long,
-    val deviceAddress: String,
+    val deviceAddress: String?,
     val rssi: Int
 )

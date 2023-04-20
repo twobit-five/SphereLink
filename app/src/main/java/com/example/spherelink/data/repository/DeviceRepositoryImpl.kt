@@ -61,7 +61,7 @@ class DeviceRepositoryImpl (
 
 
     override suspend fun insertRssiValueWithLimit(rssiValue: RssiValue, limit: Int) {
-        val rssiValues = dao.getDeviceHistoryList(rssiValue.deviceAddress)
+        val rssiValues = dao.getDeviceHistoryList(rssiValue.deviceAddress!!)
         if (rssiValues.size >= limit) {
             val toDelete = rssiValues.size - limit + 1
             for (i in 0 until toDelete) {
@@ -73,5 +73,9 @@ class DeviceRepositoryImpl (
 
     override fun getDeviceHistory(deviceAddress: String): Flow<List<RssiValue>> {
         return dao.getDeviceHistory(deviceAddress)
+    }
+
+    override fun getDeviceHistoryList(deviceAddress: String): List<RssiValue> {
+        return dao.getDeviceHistoryList(deviceAddress)
     }
 }
