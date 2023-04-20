@@ -20,7 +20,7 @@ private const val alphaWeight = 0.4
 
 class DistanceCalculatorImpl @Inject constructor(private val repository: DeviceRepository) : DistanceCalculator {
 
-    override fun updateDistance(deviceAddress: String, currentRSSI: Int) {
+    override fun updateDistance(deviceAddress: String) {
         CoroutineScope(Dispatchers.IO).launch {
 
             //TODO  get the old distance from the database, probably not needed now.
@@ -32,11 +32,11 @@ class DistanceCalculatorImpl @Inject constructor(private val repository: DeviceR
             Log.d(TAG,"Device: [$deviceAddress], Updated Distance [$newDistance]")
 
             // update distance and rssi in database, for the device card (display purposes)
-            updateDistanceForDeviceEntity(deviceAddress, newDistance, currentRSSI)
+            updateDistanceForDeviceEntity(deviceAddress, newDistance)
         }
     }
 
-    suspend fun updateDistanceForDeviceEntity(deviceAddress: String, distance: Int, rssi: Int) {
+    suspend fun updateDistanceForDeviceEntity(deviceAddress: String, distance: Int) {
         repository.updateDistance(deviceAddress, distance)
     }
 

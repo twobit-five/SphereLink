@@ -14,6 +14,7 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.example.spherelink.R
 import com.example.spherelink.data.entities.DeviceEntity
+import com.example.spherelink.domain.distance.DistanceCalculatorImpl
 import com.example.spherelink.domain.repo.DeviceRepository
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -40,6 +41,8 @@ class BluetoothService (): Service() {
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
     private var job: Job? = null
 
+    private var previousDistanceTime = 0L
+    private val distancetime = 10000L
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
@@ -69,6 +72,13 @@ class BluetoothService (): Service() {
                 deviceManager.setDeviceList(deviceList)
                 deviceManager.connectToAllDevices()
                 deviceManager.requestRSSIfromAllDevices()
+
+                //calculat the distance every 10 seconds
+                val currentTime = System.currentTimeMillis()
+                if (currentTime - previousDistanceTime > distancetime) {
+                    deviceManager.updateDistances()
+                    previousDistanceTime = currentTime
+                }
 
                 // TODO add a variable delay which increases sample rate when in motion?
                 // ood starting point for static frequency is between 1-10 samples per second.
