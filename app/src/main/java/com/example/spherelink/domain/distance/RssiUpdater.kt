@@ -16,6 +16,8 @@ class RssiUpdater  @Inject constructor(private val repository: DeviceRepository)
         CoroutineScope(Dispatchers.IO).launch {
             repository.insertRssiValueWithLimit(
                 RssiValue(timestamp = System.currentTimeMillis(), deviceAddress = deviceAddress, rssi =  currentRSSI), DEVICE_HISTORY_LIMIT)
+
+            repository.updateRssi(deviceAddress, currentRSSI)
         }
     }
 }

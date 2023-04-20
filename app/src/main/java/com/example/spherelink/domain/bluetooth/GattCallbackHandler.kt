@@ -26,6 +26,9 @@ class GattCallbackHandler(repository: DeviceRepository) : BluetoothGattCallback(
     private var distanceCalculator: DistanceCalculator = DistanceCalculatorImpl(repository)
     private val rssiUpdater = RssiUpdater(repository)
 
+    private val previousDistanceTime = 0
+    private val distancetime = 10000L
+
     @SuppressLint("MissingPermission")
     override fun onConnectionStateChange(gatt: BluetoothGatt, status: Int, newState: Int) {
         val deviceAddress = gatt.device.address
@@ -111,8 +114,11 @@ class GattCallbackHandler(repository: DeviceRepository) : BluetoothGattCallback(
             //update the rssi value in the database
             rssiUpdater.updateRssi(deviceAddress!!, rssi)
 
-            //let the distance calculator do the work
-            distanceCalculator.updateDistance(deviceAddress!!,rssi)
+            //calculat the distance every 10 seconds
+            if (System.currentTimeMillis() - previousDistanceTime > distancetime) {
+                //let the distance calculator do the work
+                distanceCalculator.updateDistance(deviceAddress!!, rssi)
+            }
 
         } else {
             Log.d(TAG, "Read remote RSSI failed: $status")
