@@ -7,11 +7,11 @@ import com.example.spherelink.data.entities.RssiValue
 import com.example.spherelink.domain.repo.DeviceRepository
 import com.example.spherelink.domain.distance.DistanceCalculator
 import com.example.spherelink.domain.distance.DistanceCalculatorImpl
+import com.example.spherelink.domain.distance.RssiUpdater
 import kotlinx.coroutines.*
 import java.util.*
 
 private const val TAG = "GattCallbackHandler"
-private const val DEVICE_HISTORY_LIMIT = 10
 
 
 class GattCallbackHandler(repository: DeviceRepository) : BluetoothGattCallback() {
@@ -24,6 +24,7 @@ class GattCallbackHandler(repository: DeviceRepository) : BluetoothGattCallback(
     private var batteryLevel: Int = -1
 
     private var distanceCalculator: DistanceCalculator = DistanceCalculatorImpl(repository)
+    private val rssiUpdater = RssiUpdater(repository)
 
     @SuppressLint("MissingPermission")
     override fun onConnectionStateChange(gatt: BluetoothGatt, status: Int, newState: Int) {
@@ -94,6 +95,7 @@ class GattCallbackHandler(repository: DeviceRepository) : BluetoothGattCallback(
             CoroutineScope(Dispatchers.IO).launch {
                 repository.updateBatteryLevel(deviceAddress!!, batteryLevel)
             }
+
             Log.v(TAG, "Device: [${deviceAddress}], Battery level: $batteryLevel" )
         }
     }
@@ -106,11 +108,8 @@ class GattCallbackHandler(repository: DeviceRepository) : BluetoothGattCallback(
             val deviceAddress = gatt?.device?.address
             Log.d(TAG, "Remote RSSI for device $deviceAddress: $rssi")
 
-            // Add Device RSSI to device history table
-            CoroutineScope(Dispatchers.IO).launch {
-                repository.insertRssiValueWithLimit(
-                    RssiValue(timestamp = System.currentTimeMillis(), deviceAddress = deviceAddress, rssi =  rssi), DEVICE_HISTORY_LIMIT)
-            }
+            //update the rssi value in the database
+            rssiUpdater.updateRssi(deviceAddress!!, rssi)
 
             //let the distance calculator do the work
             distanceCalculator.updateDistance(deviceAddress!!,rssi)
