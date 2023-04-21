@@ -129,9 +129,11 @@ class DeviceManager @Inject constructor(private val context: Context, private va
     }
 
     fun updateDistances() {
-        val deviceList = repository.getDevicesAsList()
-        deviceList.forEach { device ->
-            distanceCalculator.updateDistance(device.address)
+        CoroutineScope(Dispatchers.IO).launch {
+            val deviceList = repository.getDevicesAsList()
+            deviceList.forEach { device ->
+                distanceCalculator.updateDistance(device.address)
+            }
         }
     }
 

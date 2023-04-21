@@ -31,5 +31,9 @@ interface DeviceRepository {
 
     fun getDeviceHistory(deviceAddress: String): Flow<List<RssiValue>>
 
-    fun getDeviceHistoryList(deviceAddress: String): List<RssiValue>
+    suspend fun getDeviceHistoryList(deviceAddress: String): List<RssiValue>
+
+    suspend fun deleteRssiValues(rssivalues: Int)
+
+    suspend fun deleteOldRssiValues(deviceAddress: String, limit: Long)
 }

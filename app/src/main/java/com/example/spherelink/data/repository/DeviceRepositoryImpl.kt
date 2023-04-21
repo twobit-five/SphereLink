@@ -26,8 +26,7 @@ class DeviceRepositoryImpl (
         return dao.getAllDevices()
     }
 
-    override fun getDevicesAsList(): List<DeviceEntity>
-    {
+    override fun getDevicesAsList(): List<DeviceEntity> {
         return dao.getDevicesAsList()
     }
 
@@ -59,7 +58,6 @@ class DeviceRepositoryImpl (
         dao.updateBatteryLevel(address, batteryLevel)
     }
 
-
     override suspend fun insertRssiValueWithLimit(rssiValue: RssiValue, limit: Int) {
         val rssiValues = dao.getDeviceHistoryList(rssiValue.deviceAddress!!)
         if (rssiValues.size >= limit) {
@@ -75,7 +73,15 @@ class DeviceRepositoryImpl (
         return dao.getDeviceHistory(deviceAddress)
     }
 
-    override fun getDeviceHistoryList(deviceAddress: String): List<RssiValue> {
+    override suspend fun getDeviceHistoryList(deviceAddress: String): List<RssiValue> {
         return dao.getDeviceHistoryList(deviceAddress)
+    }
+
+    override suspend fun deleteRssiValues(rssi: Int) {
+        dao.deleteRssiValues(rssi)
+    }
+
+    override suspend fun deleteOldRssiValues(deviceAddress: String, limit: Long) {
+        dao.deleteOldRssiValues(deviceAddress, limit)
     }
 }
