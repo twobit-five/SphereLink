@@ -14,7 +14,7 @@ private const val TAG = "DistanceCalculatorImpl"
 private const val attenValue = 2.4
 //TODO  Calibration constant for RSSI at 1 meter to increase accuracy.
 //NEED TO GET THIS FROM THE DEVICE, represented as TX power
-private const val baseRssi = -58
+private const val baseRssi = -38
 private const val alphaWeight = 0.4
 
 
@@ -22,9 +22,6 @@ class DistanceCalculatorImpl @Inject constructor(private val repository: DeviceR
 
     override fun updateDistance(deviceAddress: String) {
         CoroutineScope(Dispatchers.IO).launch {
-
-            //TODO  get the old distance from the database, probably not needed now.
-            val oldDistance = repository.getDistance(deviceAddress)
 
             val deviceHistory = repository.getDeviceHistoryList(deviceAddress)
             val newDistance = calculateDistanceFromHistory(deviceHistory)
@@ -42,8 +39,15 @@ class DistanceCalculatorImpl @Inject constructor(private val repository: DeviceR
 
     fun calculateDistanceFromHistory(deviceHistory: List<RssiValue>): Int {
         var distCalc = 0
+        var rssiSum = 0
 
-        //TODO implement this function.  To keep code clean lets not include several variations at once.
+         if (deviceHistory.isNotEmpty()) {
+             for (rssiEntry in deviceHistory) {
+                 rssiSum = (rssiSum + rssiEntry.rssi)
+             }
+         }
+         val avgRssi = rssiSum / deviceHistory.size
+         distCalc = calculateDistance(avgRssi)
 
         return distCalc
     }
