@@ -47,6 +47,8 @@ class DeviceManager @Inject constructor(private val context: Context, private va
 
         gattCallbackMap.keys.forEach { address ->
             if (!isDeviceConnected(address))
+
+                //TODO check whether device connected successfully??
                 connectToDevice(address)
             else
                 Log.v(TAG, "Device already connected: $address")
@@ -63,7 +65,7 @@ class DeviceManager @Inject constructor(private val context: Context, private va
 
                 val device = adapter.getRemoteDevice(address)
                 // connect to the GATT server on the device
-                var bluetoothGatt = device.connectGatt(context, false, gattCallback)
+                var bluetoothGatt = device.connectGatt(context, true, gattCallback)
                 gattMap[address] = bluetoothGatt
 
                 return true

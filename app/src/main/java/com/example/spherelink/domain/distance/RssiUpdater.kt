@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 import java.lang.Math.abs
 import javax.inject.Inject
 
-private const val DEVICE_HISTORY_LIMIT = 10
+private const val DEVICE_HISTORY_LIMIT = 20
 private const val RSSI_STANDARD_DEVIATION_LIMIT = 2
 private const val RSSI_TIME_THRESHOLD = 5000L
 

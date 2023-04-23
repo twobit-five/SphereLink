@@ -36,11 +36,10 @@ interface DeviceDao {
     @Query("UPDATE device_table SET rssi = :rssi, timestamp = :timestamp WHERE address = :address")
     suspend fun updateRssi(address: String, rssi: Int, timestamp: Long = System.currentTimeMillis())
 
-    @Query("UPDATE device_table SET distance = :distance, timestamp = :timestamp WHERE address = :address")
+    @Query("UPDATE device_table SET distance = :distance WHERE address = :address")
     suspend fun updateDistance(
         address: String,
         distance: Int,
-        timestamp: Long = System.currentTimeMillis()
     )
 
     @Query("UPDATE device_table SET isConnected = :isConnected WHERE address = :address")

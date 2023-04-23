@@ -14,7 +14,7 @@ private const val TAG = "DistanceCalculatorImpl"
 private const val attenValue = 2.4
 //TODO  Calibration constant for RSSI at 1 meter to increase accuracy.
 //NEED TO GET THIS FROM THE DEVICE, represented as TX power
-private const val baseRssi = -38
+private const val baseRssi = -34
 private const val alphaWeight = 0.4
 
 
@@ -45,9 +45,10 @@ class DistanceCalculatorImpl @Inject constructor(private val repository: DeviceR
              for (rssiEntry in deviceHistory) {
                  rssiSum = (rssiSum + rssiEntry.rssi)
              }
+
+             val avgRssi = rssiSum / deviceHistory.size
+             distCalc = calculateDistance(avgRssi)
          }
-         val avgRssi = rssiSum / deviceHistory.size
-         distCalc = calculateDistance(avgRssi)
 
         return distCalc
     }

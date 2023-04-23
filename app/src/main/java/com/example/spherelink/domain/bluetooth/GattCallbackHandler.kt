@@ -31,6 +31,13 @@ class GattCallbackHandler(repository: DeviceRepository) : BluetoothGattCallback(
         when (newState) {
             BluetoothProfile.STATE_CONNECTED -> {
 
+                gatt?.requestConnectionPriority(BluetoothGatt.CONNECTION_PRIORITY_HIGH)
+                gatt?.setPreferredPhy(
+                    BluetoothDevice.PHY_LE_CODED_MASK,
+                    BluetoothDevice.PHY_LE_CODED_MASK,
+                    BluetoothDevice.PHY_OPTION_S2 or BluetoothDevice.PHY_OPTION_S8,
+                )
+
                 val scope = CoroutineScope(Job() + Dispatchers.Main)
                 scope.launch(Dispatchers.IO) {
                     val deviceAddress = gatt.device.address
@@ -44,6 +51,7 @@ class GattCallbackHandler(repository: DeviceRepository) : BluetoothGattCallback(
 
                 Log.i(TAG, "Device connected to GATT server. ${deviceAddress}")
                 gatt.discoverServices()
+                gatt.readPhy()
             }
             BluetoothProfile.STATE_DISCONNECTED -> {
                 val scope = CoroutineScope(Job() + Dispatchers.Main)
@@ -113,5 +121,10 @@ class GattCallbackHandler(repository: DeviceRepository) : BluetoothGattCallback(
         } else {
             Log.d(TAG, "Read remote RSSI failed: $status")
         }
+    }
+
+    override fun onPhyRead(gatt: BluetoothGatt?, txPhy: Int, rxPhy: Int, status: Int) {
+        super.onPhyRead(gatt, txPhy, rxPhy, status)
+        Log.d(TAG, "onPhyRead: $txPhy, $rxPhy, $status")
     }
 }
