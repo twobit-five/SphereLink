@@ -5,6 +5,8 @@ import android.bluetooth.*
 import android.content.Context
 import android.util.Log
 import com.example.spherelink.data.entities.DeviceEntity
+import com.example.spherelink.domain.distance.DistanceCalculator
+import com.example.spherelink.domain.distance.DistanceCalculatorImpl
 import com.example.spherelink.domain.repo.DeviceRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +25,8 @@ class DeviceManager @Inject constructor(private val context: Context, private va
 
     private val gattCallbackMap: MutableMap<String, GattCallbackHandler> = ConcurrentHashMap()
     private val gattMap: MutableMap<String, BluetoothGatt> = ConcurrentHashMap()
+
+    private var distanceCalculator: DistanceCalculator = DistanceCalculatorImpl(repository)
 
 
     fun setDeviceList(targetDeviceList: List<DeviceEntity>) {
@@ -43,6 +47,8 @@ class DeviceManager @Inject constructor(private val context: Context, private va
 
         gattCallbackMap.keys.forEach { address ->
             if (!isDeviceConnected(address))
+
+                //TODO check whether device connected successfully??
                 connectToDevice(address)
             else
                 Log.v(TAG, "Device already connected: $address")
@@ -59,7 +65,7 @@ class DeviceManager @Inject constructor(private val context: Context, private va
 
                 val device = adapter.getRemoteDevice(address)
                 // connect to the GATT server on the device
-                var bluetoothGatt = device.connectGatt(context, false, gattCallback)
+                var bluetoothGatt = device.connectGatt(context, true, gattCallback)
                 gattMap[address] = bluetoothGatt
 
                 return true
@@ -121,6 +127,15 @@ class DeviceManager @Inject constructor(private val context: Context, private va
     fun disconnectFromAllDevices() {
         gattMap.keys.forEach { macAddress ->
             disconnectDevice(macAddress)
+        }
+    }
+
+    fun updateDistances() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val deviceList = repository.getDevicesAsList()
+            deviceList.forEach { device ->
+                distanceCalculator.updateDistance(device.address)
+            }
         }
     }
 

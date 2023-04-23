@@ -34,7 +34,9 @@ fun DeviceDetailsScreen(
     val scaffoldState = rememberScaffoldState()
     val device = viewModel.device
 
-    Scaffold() {
+    Scaffold(
+        scaffoldState = scaffoldState,
+        ) {
         Column(modifier = Modifier.fillMaxSize()) {
             // Upper part
             Column(modifier = Modifier.weight(1f)) {

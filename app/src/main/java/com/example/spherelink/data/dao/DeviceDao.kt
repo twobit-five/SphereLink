@@ -36,14 +36,21 @@ interface DeviceDao {
     @Query("UPDATE device_table SET rssi = :rssi, timestamp = :timestamp WHERE address = :address")
     suspend fun updateRssi(address: String, rssi: Int, timestamp: Long = System.currentTimeMillis())
 
-    @Query("UPDATE device_table SET distance = :distance, timestamp = :timestamp WHERE address = :address")
-    suspend fun updateDistance(address: String, distance: Int, timestamp: Long = System.currentTimeMillis())
+    @Query("UPDATE device_table SET distance = :distance WHERE address = :address")
+    suspend fun updateDistance(
+        address: String,
+        distance: Int,
+    )
 
     @Query("UPDATE device_table SET isConnected = :isConnected WHERE address = :address")
     suspend fun updateIsConnected(address: String, isConnected: Boolean)
 
     @Query("UPDATE device_table SET batteryLevel = :batteryLevel, timestamp = :timestamp WHERE address = :address")
-    suspend fun updateBatteryLevel(address: String, batteryLevel: Int, timestamp: Long = System.currentTimeMillis())
+    suspend fun updateBatteryLevel(
+        address: String,
+        batteryLevel: Int,
+        timestamp: Long = System.currentTimeMillis()
+    )
 
 
     // Device History Table
@@ -59,4 +66,10 @@ interface DeviceDao {
 
     @Query("DELETE FROM device_history WHERE id = :id")
     fun deleteRssiValue(id: Int)
+
+    @Query("DELETE FROM device_history WHERE rssi =:rssiValue")
+    fun deleteRssiValues(rssiValue: Int)
+
+    @Query("DELETE FROM device_history WHERE deviceAddress = :deviceAddress AND timestamp < :threshold")
+    suspend fun deleteOldRssiValues(deviceAddress: String, threshold: Long)
 }

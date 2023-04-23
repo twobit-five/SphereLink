@@ -14,33 +14,46 @@ private const val TAG = "DistanceCalculatorImpl"
 private const val attenValue = 2.4
 //TODO  Calibration constant for RSSI at 1 meter to increase accuracy.
 //NEED TO GET THIS FROM THE DEVICE, represented as TX power
-private const val baseRssi = -58
+private const val baseRssi = -34
 private const val alphaWeight = 0.4
-
-private const val LIMIT = 10
 
 
 class DistanceCalculatorImpl @Inject constructor(private val repository: DeviceRepository) : DistanceCalculator {
 
-    override fun calculateDistance(deviceAddress: String, currentRSSI: Int) {
-
+    override fun updateDistance(deviceAddress: String) {
         CoroutineScope(Dispatchers.IO).launch {
 
-            //TODO some devices send the calibration constant in the manufacturer data, use that instead of the default value
-            val distance = 10.0.pow((baseRssi - currentRSSI) / (10 * attenValue))
-            val oldDistance = repository.getDistance(deviceAddress)
-            val newDistance = ((alphaWeight * distance) + ((1 - alphaWeight) * oldDistance)).toInt()
-            Log.d(TAG, "Device: [$deviceAddress], Previous Distance [$oldDistance], Updated Distance [$newDistance]")
+            val deviceHistory = repository.getDeviceHistoryList(deviceAddress)
+            val newDistance = calculateDistanceFromHistory(deviceHistory)
 
-            //TODO filter for values beyond a certain standard deviation from the mean?
-
-            // Insert new rssi value into database, for history.
-            repository.insertRssiValueWithLimit(
-                RssiValue(timestamp = System.currentTimeMillis(), deviceAddress = deviceAddress, rssi =  currentRSSI), LIMIT)
+            Log.d(TAG,"Device: [$deviceAddress], Updated Distance [$newDistance]")
 
             // update distance and rssi in database, for the device card (display purposes)
-            repository.updateDistance(deviceAddress, newDistance)
-            repository.updateRssi(deviceAddress, currentRSSI)
+            updateDistanceForDeviceEntity(deviceAddress, newDistance)
         }
+    }
+
+    suspend fun updateDistanceForDeviceEntity(deviceAddress: String, distance: Int) {
+        repository.updateDistance(deviceAddress, distance)
+    }
+
+    fun calculateDistanceFromHistory(deviceHistory: List<RssiValue>): Int {
+        var distCalc = 0
+        var rssiSum = 0
+
+         if (deviceHistory.isNotEmpty()) {
+             for (rssiEntry in deviceHistory) {
+                 rssiSum = (rssiSum + rssiEntry.rssi)
+             }
+
+             val avgRssi = rssiSum / deviceHistory.size
+             distCalc = calculateDistance(avgRssi)
+         }
+
+        return distCalc
+    }
+
+    fun calculateDistance(rssi: Int): Int {
+        return 10.0.pow((baseRssi - rssi) / (10 * attenValue)).toInt()
     }
 }

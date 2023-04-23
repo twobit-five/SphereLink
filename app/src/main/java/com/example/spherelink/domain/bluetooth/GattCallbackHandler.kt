@@ -3,13 +3,12 @@ package com.example.spherelink.domain.bluetooth
 import android.annotation.SuppressLint
 import android.bluetooth.*
 import android.util.Log
+import com.example.spherelink.data.entities.RssiValue
 import com.example.spherelink.domain.repo.DeviceRepository
 import com.example.spherelink.domain.distance.DistanceCalculator
 import com.example.spherelink.domain.distance.DistanceCalculatorImpl
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import com.example.spherelink.domain.distance.RssiUpdater
+import kotlinx.coroutines.*
 import java.util.*
 
 private const val TAG = "GattCallbackHandler"
@@ -24,14 +23,20 @@ class GattCallbackHandler(repository: DeviceRepository) : BluetoothGattCallback(
 
     private var batteryLevel: Int = -1
 
-    private var distanceCalculator: DistanceCalculator = DistanceCalculatorImpl(repository)
-
+    private val rssiUpdater = RssiUpdater(repository)
 
     @SuppressLint("MissingPermission")
     override fun onConnectionStateChange(gatt: BluetoothGatt, status: Int, newState: Int) {
         val deviceAddress = gatt.device.address
         when (newState) {
             BluetoothProfile.STATE_CONNECTED -> {
+
+                gatt?.requestConnectionPriority(BluetoothGatt.CONNECTION_PRIORITY_HIGH)
+                gatt?.setPreferredPhy(
+                    BluetoothDevice.PHY_LE_CODED_MASK,
+                    BluetoothDevice.PHY_LE_CODED_MASK,
+                    BluetoothDevice.PHY_OPTION_S2 or BluetoothDevice.PHY_OPTION_S8,
+                )
 
                 val scope = CoroutineScope(Job() + Dispatchers.Main)
                 scope.launch(Dispatchers.IO) {
@@ -41,11 +46,12 @@ class GattCallbackHandler(repository: DeviceRepository) : BluetoothGattCallback(
 
                     if (deviceName != null) {
                             repository.updateDeviceName(deviceAddress, deviceName)
-                        }
+                    }
                 }
 
                 Log.i(TAG, "Device connected to GATT server. ${deviceAddress}")
                 gatt.discoverServices()
+                gatt.readPhy()
             }
             BluetoothProfile.STATE_DISCONNECTED -> {
                 val scope = CoroutineScope(Job() + Dispatchers.Main)
@@ -96,6 +102,7 @@ class GattCallbackHandler(repository: DeviceRepository) : BluetoothGattCallback(
             CoroutineScope(Dispatchers.IO).launch {
                 repository.updateBatteryLevel(deviceAddress!!, batteryLevel)
             }
+
             Log.v(TAG, "Device: [${deviceAddress}], Battery level: $batteryLevel" )
         }
     }
@@ -107,11 +114,17 @@ class GattCallbackHandler(repository: DeviceRepository) : BluetoothGattCallback(
         if (status == BluetoothGatt.GATT_SUCCESS) {
             val deviceAddress = gatt?.device?.address
             Log.d(TAG, "Remote RSSI for device $deviceAddress: $rssi")
-            //let the distance calculator do the work
-            distanceCalculator.calculateDistance(deviceAddress!!,rssi)
+
+            //update the rssi value in the database
+            rssiUpdater.updateRssi(deviceAddress!!, rssi)
 
         } else {
             Log.d(TAG, "Read remote RSSI failed: $status")
         }
+    }
+
+    override fun onPhyRead(gatt: BluetoothGatt?, txPhy: Int, rxPhy: Int, status: Int) {
+        super.onPhyRead(gatt, txPhy, rxPhy, status)
+        Log.d(TAG, "onPhyRead: $txPhy, $rxPhy, $status")
     }
 }
