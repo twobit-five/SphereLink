@@ -64,7 +64,6 @@ class DeviceManager @Inject constructor(private val context: Context, private va
                 val gattCallback = gattCallbackMap[address]
 
                 val device = adapter.getRemoteDevice(address)
-                // connect to the GATT server on the device
                 var bluetoothGatt = device.connectGatt(context, true, gattCallback)
                 gattMap[address] = bluetoothGatt
 

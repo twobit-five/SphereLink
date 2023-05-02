@@ -31,12 +31,7 @@ class GattCallbackHandler(repository: DeviceRepository) : BluetoothGattCallback(
         when (newState) {
             BluetoothProfile.STATE_CONNECTED -> {
 
-                gatt?.requestConnectionPriority(BluetoothGatt.CONNECTION_PRIORITY_HIGH)
-                gatt?.setPreferredPhy(
-                    BluetoothDevice.PHY_LE_CODED_MASK,
-                    BluetoothDevice.PHY_LE_CODED_MASK,
-                    BluetoothDevice.PHY_OPTION_S2 or BluetoothDevice.PHY_OPTION_S8,
-                )
+
 
                 val scope = CoroutineScope(Job() + Dispatchers.Main)
                 scope.launch(Dispatchers.IO) {

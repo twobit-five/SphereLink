@@ -14,7 +14,7 @@ private const val TAG = "DistanceCalculatorImpl"
 private const val attenValue = 2.4
 //TODO  Calibration constant for RSSI at 1 meter to increase accuracy.
 //NEED TO GET THIS FROM THE DEVICE, represented as TX power
-private const val baseRssi = -34
+private const val baseRssi = -46
 private const val alphaWeight = 0.4
 
 
