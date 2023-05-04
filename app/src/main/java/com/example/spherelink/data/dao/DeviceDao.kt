@@ -2,7 +2,8 @@ package com.example.spherelink.data.dao
 
 import androidx.room.*
 import com.example.spherelink.data.entities.DeviceEntity
-import com.example.spherelink.data.entities.RssiValue
+import com.example.spherelink.data.entities.DeviceRssiStats
+import com.example.spherelink.data.entities.DeviceRssiHistory
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -16,7 +17,7 @@ interface DeviceDao {
     suspend fun deleteDevice(deviceEntity: DeviceEntity)
 
     @Query("SELECT * FROM device_table WHERE address = :address")
-    fun getDeviceByAddress(address: String): DeviceEntity
+    fun getDeviceByAddress(address: String): Flow<DeviceEntity>
 
     @Query("SELECT * FROM device_table")
     fun getAllDevices(): Flow<List<DeviceEntity>>
@@ -30,11 +31,14 @@ interface DeviceDao {
     @Query("SELECT batteryLevel FROM device_table WHERE address = :address")
     suspend fun getBatteryLevel(address: String): Int
 
-    @Query("Update device_table SET device_name = :deviceName WHERE address = :address")
+    @Query("Update device_table SET name = :deviceName WHERE address = :address")
     suspend fun updateDeviceName(address: String, deviceName: String)
 
     @Query("UPDATE device_table SET rssi = :rssi, timestamp = :timestamp WHERE address = :address")
     suspend fun updateRssi(address: String, rssi: Int, timestamp: Long = System.currentTimeMillis())
+
+    @Query("UPDATE device_table SET avgRSSI = :avgRSSI WHERE address = :address")
+    suspend fun updateAvgRssi(address: String, avgRSSI: Int)
 
     @Query("UPDATE device_table SET distance = :distance WHERE address = :address")
     suspend fun updateDistance(
@@ -56,13 +60,13 @@ interface DeviceDao {
     // Device History Table
 
     @Query("SELECT * FROM device_history WHERE deviceAddress = :deviceAddress ORDER BY timestamp DESC")
-    fun getDeviceHistory(deviceAddress: String): Flow<List<RssiValue>>
+    fun getDeviceHistory(deviceAddress: String): Flow<List<DeviceRssiHistory>>
 
     @Query("SELECT * FROM device_history WHERE deviceAddress = :deviceAddress ORDER BY timestamp DESC")
-    fun getDeviceHistoryList(deviceAddress: String): List<RssiValue>
+    fun getDeviceHistoryList(deviceAddress: String): List<DeviceRssiHistory>
 
     @Insert
-    fun insertRssiValue(rssiValue: RssiValue)
+    fun insertRssiValue(deviceRssiHistory: DeviceRssiHistory)
 
     @Query("DELETE FROM device_history WHERE id = :id")
     fun deleteRssiValue(id: Int)
@@ -72,4 +76,14 @@ interface DeviceDao {
 
     @Query("DELETE FROM device_history WHERE deviceAddress = :deviceAddress AND timestamp < :threshold")
     suspend fun deleteOldRssiValues(deviceAddress: String, threshold: Long)
+
+
+    //RSSI Stats Table
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertRssiStats(deviceRssiStats: DeviceRssiStats)
+
+    @Query("SELECT * FROM rssi_stats WHERE deviceAddress = :deviceAddress")
+    fun getRssiStats(deviceAddress: String): Flow<DeviceRssiStats>
+
 }

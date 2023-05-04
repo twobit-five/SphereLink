@@ -42,7 +42,7 @@ fun DeviceCard(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = device.device_name,
+                    text = device.name,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(bottom = 4.dp)
                 )
@@ -62,7 +62,7 @@ fun DeviceCard(
                     modifier = Modifier.fillMaxWidth()
                 )
                 Text(
-                    text = "RSSI: ${device.rssi}",
+                    text = "RSSI: ${device.rssi}, Avg: ${device.avgRSSI}",
                     modifier = Modifier.padding(top = 8.dp)
                 )
                 val lastSeenDuration = Duration.between(
@@ -112,13 +112,14 @@ fun PreviewDeviceCard(){
     DeviceCard(
         device = DeviceEntity(
             address = "00:00:00:00:00",
-            device_name = "Test Device",
+            name = "Test Device",
             rssi = -50,
             distance = 10,
             timestamp = System.currentTimeMillis() - 9000,
             isDone = false,
             isConnected = true,
-            batteryLevel = 100
+            batteryLevel = 100,
+            avgRSSI = 0
         ),
         onEvent = {}
     )

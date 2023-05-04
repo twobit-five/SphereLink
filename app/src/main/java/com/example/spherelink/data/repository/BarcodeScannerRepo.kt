@@ -1,6 +1,5 @@
 package com.example.spherelink.data.repository
 
-import android.util.Log
 import com.example.spherelink.domain.repo.BarcodeRepository
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanner
@@ -10,7 +9,7 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class BarcodeScannerRepoImpl @Inject constructor(
+class BarcodeScannerRepo @Inject constructor(
     private val scanner: GmsBarcodeScanner,
 ): BarcodeRepository {
 

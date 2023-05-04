@@ -1,6 +1,6 @@
 package com.example.spherelink.di
 
-import com.example.spherelink.data.repository.BarcodeScannerRepoImpl
+import com.example.spherelink.data.repository.BarcodeScannerRepo
 import com.example.spherelink.domain.repo.BarcodeRepository
 import dagger.Binds
 import dagger.Module
@@ -14,5 +14,5 @@ abstract class RepositoryModule {
 
     @Binds
     @ViewModelScoped
-    abstract fun bindBarcodeRepository(impl: BarcodeScannerRepoImpl): BarcodeRepository
+    abstract fun bindBarcodeRepository(impl: BarcodeScannerRepo): BarcodeRepository
 }
