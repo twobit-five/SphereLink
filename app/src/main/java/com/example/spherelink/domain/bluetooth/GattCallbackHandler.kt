@@ -3,10 +3,7 @@ package com.example.spherelink.domain.bluetooth
 import android.annotation.SuppressLint
 import android.bluetooth.*
 import android.util.Log
-import com.example.spherelink.data.entities.RssiValue
 import com.example.spherelink.domain.repo.DeviceRepository
-import com.example.spherelink.domain.distance.DistanceCalculator
-import com.example.spherelink.domain.distance.DistanceCalculatorImpl
 import com.example.spherelink.domain.distance.RssiUpdater
 import kotlinx.coroutines.*
 import java.util.*
@@ -22,7 +19,6 @@ class GattCallbackHandler(repository: DeviceRepository) : BluetoothGattCallback(
     private val BATTERY_LEVEL_UUID = UUID.fromString("00002a19-0000-1000-8000-00805f9b34fb")
 
     private var batteryLevel: Int = -1
-
     private val rssiUpdater = RssiUpdater(repository)
 
     @SuppressLint("MissingPermission")
@@ -30,29 +26,26 @@ class GattCallbackHandler(repository: DeviceRepository) : BluetoothGattCallback(
         val deviceAddress = gatt.device.address
         when (newState) {
             BluetoothProfile.STATE_CONNECTED -> {
-
-
-
                 val scope = CoroutineScope(Job() + Dispatchers.Main)
                 scope.launch(Dispatchers.IO) {
                     val deviceAddress = gatt.device.address
                     val deviceName = gatt.device.name
-                    repository.updateIsConnected(deviceAddress, true)
+                    repository.updateDeviceEntitiyIsConnected(deviceAddress, true)
 
                     if (deviceName != null) {
-                            repository.updateDeviceName(deviceAddress, deviceName)
+                            repository.updateDeviceEntityDeviceName(deviceAddress, deviceName)
                     }
                 }
 
                 Log.i(TAG, "Device connected to GATT server. ${deviceAddress}")
                 gatt.discoverServices()
-                gatt.readPhy()
+                gatt.readPhy() // nto needed, but would like to implmenent LE Coded Phy for more reliable RSSI, but less throughput.
             }
             BluetoothProfile.STATE_DISCONNECTED -> {
                 val scope = CoroutineScope(Job() + Dispatchers.Main)
                 scope.launch(Dispatchers.IO) {
                     val deviceAddress = gatt.device.address
-                    repository.updateIsConnected(deviceAddress, false)
+                    repository.updateDeviceEntitiyIsConnected(deviceAddress, false)
                 }
 
                 Log.i(TAG, "Device disconnected from GATT server. ${deviceAddress}")
@@ -81,7 +74,7 @@ class GattCallbackHandler(repository: DeviceRepository) : BluetoothGattCallback(
                 batteryLevel =
                     characteristic?.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0)!!
                 CoroutineScope(Dispatchers.IO).launch {
-                    repository.updateBatteryLevel(deviceAddress!!, batteryLevel)
+                    repository.updateDeviceEntityBatteryLevel(deviceAddress!!, batteryLevel)
                 }
                 Log.v(TAG, "Device: [${deviceAddress}], Battery level: $batteryLevel" )
             }
@@ -95,7 +88,7 @@ class GattCallbackHandler(repository: DeviceRepository) : BluetoothGattCallback(
                 characteristic?.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0)!!
 
             CoroutineScope(Dispatchers.IO).launch {
-                repository.updateBatteryLevel(deviceAddress!!, batteryLevel)
+                repository.updateDeviceEntityBatteryLevel(deviceAddress!!, batteryLevel)
             }
 
             Log.v(TAG, "Device: [${deviceAddress}], Battery level: $batteryLevel" )
@@ -108,7 +101,7 @@ class GattCallbackHandler(repository: DeviceRepository) : BluetoothGattCallback(
 
         if (status == BluetoothGatt.GATT_SUCCESS) {
             val deviceAddress = gatt?.device?.address
-            Log.d(TAG, "Remote RSSI for device $deviceAddress: $rssi")
+            //Log.d(TAG, "Remote RSSI for device $deviceAddress: $rssi")
 
             //update the rssi value in the database
             rssiUpdater.updateRssi(deviceAddress!!, rssi)

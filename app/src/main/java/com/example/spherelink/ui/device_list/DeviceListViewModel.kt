@@ -18,7 +18,7 @@ class DeviceListViewModel @Inject constructor(
     private val repository: DeviceRepository
 ): ViewModel() {
 
-    val devices = repository.getAllDevices()
+    val devices = repository.getAllDeviceEntities()
 
     private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
@@ -40,7 +40,7 @@ class DeviceListViewModel @Inject constructor(
             is DeviceListEvent.OnDeleteDeviceClick -> {
                 viewModelScope.launch {
                     deletedDevice = event.device
-                    repository.deleteDevice(event.device)
+                    repository.deleteDeviceEntity(event.device)
 
                     sendUiEvent(UiEvent.ShowSnackbar(
                         message = "Device deleted",
@@ -52,13 +52,13 @@ class DeviceListViewModel @Inject constructor(
             is DeviceListEvent.OnUndoDeleteClick -> {
                 deletedDevice?.let { device ->
                     viewModelScope.launch {
-                        repository.insertDevice(device)
+                        repository.insertDeviceEntity(device)
                     }
                 }
             }
             is DeviceListEvent.OnDoneChange -> {
                 viewModelScope.launch {
-                    repository.insertDevice(
+                    repository.insertDeviceEntity(
                         event.device.copy(
                             isDone = event.isDone
                         )

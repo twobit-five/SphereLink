@@ -12,8 +12,6 @@ import com.example.spherelink.domain.repo.DeviceRepository
 import com.example.spherelink.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -38,7 +36,7 @@ class AddDeviceViewModel @Inject constructor(
         val address = savedStateHandle.get<String>("deviceAddress") ?: ""
         if(address !=  "") {
             viewModelScope.launch {
-                repository.getDeviceByAddress(address).let { deviceEntity ->
+                repository.getDeviceEntityByAddress(address).let { deviceEntity ->
                     //deviceAddress = deviceEntity.address
                     this@AddDeviceViewModel.device = device
                 }
@@ -59,16 +57,17 @@ class AddDeviceViewModel @Inject constructor(
                         ))
                         return@launch
                     }
-                    repository.insertDevice(
+                    repository.insertDeviceEntity(
                         DeviceEntity(
                             address = deviceAddress,
-                            device_name = "",
+                            name = "",
                             rssi = 0,
                             distance = 0,
                             timestamp = 0,
                             isDone = device?.isDone ?: false,
                             isConnected = false,
-                            batteryLevel = 0
+                            batteryLevel = 0,
+                            avgRSSI = 0
                         )
                     )
                     sendUiEvent(UiEvent.PopBackStack)

@@ -1,39 +1,46 @@
 package com.example.spherelink.domain.repo
 
 import com.example.spherelink.data.entities.DeviceEntity
-import com.example.spherelink.data.entities.RssiValue
+import com.example.spherelink.data.entities.DeviceRssiStats
+import com.example.spherelink.data.entities.DeviceRssiHistory
 import kotlinx.coroutines.flow.Flow
 
 interface DeviceRepository {
-    suspend fun insertDevice(device: DeviceEntity): Long
+    suspend fun insertDeviceEntity(device: DeviceEntity): Long
 
-    suspend fun deleteDevice(device: DeviceEntity)
+    suspend fun deleteDeviceEntity(device: DeviceEntity)
 
-    suspend fun getDeviceByAddress(address: String): DeviceEntity
+    fun getDeviceEntityByAddress(address: String): Flow<DeviceEntity>
 
-    fun getAllDevices(): Flow<List<DeviceEntity>>
+    fun getAllDeviceEntities(): Flow<List<DeviceEntity>>
 
-    fun getDevicesAsList(): List<DeviceEntity>
+    fun getDeviceEntitiesAsList(): List<DeviceEntity>
 
     suspend fun getBatteryLevel(address: String): Int
-    suspend fun updateDeviceName(address: String, deviceName: String)
-    suspend fun updateRssi(address: String, rssi: Int)
+    suspend fun updateDeviceEntityDeviceName(address: String, deviceName: String)
+    suspend fun updateDeviceEntityRssi(address: String, rssi: Int)
 
-    suspend fun updateDistance(address: String, distance: Int)
+    suspend fun updateDeviceEntityDistance(address: String, distance: Int)
 
-    suspend fun updateIsConnected(address: String, isConnected: Boolean)
+    suspend fun updateDeviceEntitiyIsConnected(address: String, isConnected: Boolean)
 
     suspend fun getDistance(address: String): Int
 
-    suspend fun updateBatteryLevel(address: String, batteryLevel: Int)
+    suspend fun updateDeviceEntityBatteryLevel(address: String, batteryLevel: Int)
 
-    suspend fun insertRssiValueWithLimit(rssiValue: RssiValue, limit: Int)
+    suspend fun insertRssiValueWithLimit(deviceRssiHistory: DeviceRssiHistory, limit: Int)
 
-    fun getDeviceHistory(deviceAddress: String): Flow<List<RssiValue>>
+    fun getDeviceHistory(deviceAddress: String): Flow<List<DeviceRssiHistory>>
 
-    suspend fun getDeviceHistoryList(deviceAddress: String): List<RssiValue>
+    suspend fun getDeviceHistoryList(deviceAddress: String): List<DeviceRssiHistory>
 
     suspend fun deleteRssiValues(rssivalues: Int)
 
     suspend fun deleteOldRssiValues(deviceAddress: String, limit: Long)
+
+    //suspend fun deleteAllRssiValues()
+
+    suspend fun insertRssiStat(deviceRssiStats: DeviceRssiStats)
+
+    fun getRssiStats(deviceAddress: String): Flow<DeviceRssiStats>
 }

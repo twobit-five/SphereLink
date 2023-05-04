@@ -6,7 +6,6 @@ import android.content.Context
 import android.util.Log
 import com.example.spherelink.data.entities.DeviceEntity
 import com.example.spherelink.domain.distance.DistanceCalculator
-import com.example.spherelink.domain.distance.DistanceCalculatorImpl
 import com.example.spherelink.domain.repo.DeviceRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,35 +22,16 @@ class DeviceManager @Inject constructor(private val context: Context, private va
 
     private val bluetoothAdapter: BluetoothAdapter? = bluetoothManager.adapter
 
-    private val gattCallbackMap: MutableMap<String, GattCallbackHandler> = ConcurrentHashMap()
+    private val gattCallback: GattCallbackHandler = GattCallbackHandler(repository)
     private val gattMap: MutableMap<String, BluetoothGatt> = ConcurrentHashMap()
+    private var distanceCalculator: DistanceCalculator = DistanceCalculator(repository)
 
-    private var distanceCalculator: DistanceCalculator = DistanceCalculatorImpl(repository)
 
-
-    fun setDeviceList(targetDeviceList: List<DeviceEntity>) {
-        updateDeviceList(targetDeviceList)
-    }
-
-    fun updateDeviceList(newDeviceList: List<DeviceEntity>) {
-        for (device in newDeviceList) {
-            if (!gattCallbackMap.containsKey(device.address)) {
-                gattCallbackMap[device.address] = GattCallbackHandler(repository)
+    fun connectToAllDevices(deviceList : List<DeviceEntity>) {
+        for (device in deviceList) {
+            if (!isDeviceConnected(device.address)) {
+                connectToDevice(device.address)
             }
-        }
-    }
-
-    fun connectToAllDevices() {
-        //ghatt callback map is a map of mac address to gatt callback
-        Log.v(TAG, "connectToAllDevices: ${gattCallbackMap.keys}")
-
-        gattCallbackMap.keys.forEach { address ->
-            if (!isDeviceConnected(address))
-
-                //TODO check whether device connected successfully??
-                connectToDevice(address)
-            else
-                Log.v(TAG, "Device already connected: $address")
         }
     }
 
@@ -60,11 +40,9 @@ class DeviceManager @Inject constructor(private val context: Context, private va
         bluetoothAdapter?.let { adapter ->
             try {
                 Log.v(TAG, "Attempting to connect to $address")
-                gattCallbackMap.put(address, GattCallbackHandler(repository))
-                val gattCallback = gattCallbackMap[address]
 
                 val device = adapter.getRemoteDevice(address)
-                var bluetoothGatt = device.connectGatt(context, true, gattCallback)
+                var bluetoothGatt = device.connectGatt(context, false, gattCallback)
                 gattMap[address] = bluetoothGatt
 
                 return true
@@ -78,7 +56,7 @@ class DeviceManager @Inject constructor(private val context: Context, private va
         }
     }
 
-
+    // TODO remove from map if not connected?
     @SuppressLint("MissingPermission")
     fun isDeviceConnected(macAddress: String): Boolean {
         try {
@@ -107,8 +85,6 @@ class DeviceManager @Inject constructor(private val context: Context, private va
         val gatt = gattMap[device.address]
         if (isDeviceConnected(device.address)) {
             gatt?.readRemoteRssi()
-        } else {
-            Log.v(TAG, "${device.name} - ${device.address} not connected, skipping RSSI request")
         }
     }
 
@@ -119,7 +95,6 @@ class DeviceManager @Inject constructor(private val context: Context, private va
             gatt.disconnect()
             gatt.close()
             gattMap.remove(macAddress)
-            gattCallbackMap.remove(macAddress)
         }
     }
 
@@ -131,12 +106,12 @@ class DeviceManager @Inject constructor(private val context: Context, private va
 
     fun updateDistances() {
         CoroutineScope(Dispatchers.IO).launch {
-            val deviceList = repository.getDevicesAsList()
+            val deviceList = repository.getDeviceEntitiesAsList()
             deviceList.forEach { device ->
-                distanceCalculator.updateDistance(device.address)
+                if(isDeviceConnected(device.address)) {
+                    distanceCalculator.updateDistance(device.address)
+                }
             }
         }
     }
-
-    //TODO should we call back into the DeviceManager to remove the device from the map after disconnection events?
 }
