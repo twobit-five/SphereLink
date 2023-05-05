@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.spherelink.domain.bluetooth.BluetoothService
+import com.example.spherelink.domain.notificationservice.NotificationService
 import com.example.spherelink.ui.permission.*
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -30,6 +31,7 @@ class MainActivity : ComponentActivity() {
         Manifest.permission.BLUETOOTH_ADMIN,
         Manifest.permission.BLUETOOTH,
         Manifest.permission.BLUETOOTH_CONNECT,
+        Manifest.permission.POST_NOTIFICATIONS,
         //Manifest.permission.ACCESS_FINE_LOCATION,
         //Manifest.permission.ACCESS_COARSE_LOCATION
         Manifest.permission.CAMERA
@@ -82,6 +84,9 @@ class MainActivity : ComponentActivity() {
                                 Manifest.permission.ACCESS_COARSE_LOCATION -> {
                                     CourseLocationPermissionTextProvider()
                                 }
+                                Manifest.permission.POST_NOTIFICATIONS -> {
+                                    CourseLocationPermissionTextProvider()
+                                }
                                 else -> return@forEach
                             },
                             isPermanentlyDeclined = !shouldShowRequestPermissionRationale(
@@ -104,6 +109,9 @@ class MainActivity : ComponentActivity() {
         val intent = Intent(this, BluetoothService::class.java)
         ContextCompat.startForegroundService(this, intent)
         isBluetoothServiceRunning = true
+
+        val notificationServiceIntent = Intent(this, NotificationService::class.java)
+        ContextCompat.startForegroundService(this, notificationServiceIntent)
     }
 
     override fun onDestroy() {
@@ -112,6 +120,10 @@ class MainActivity : ComponentActivity() {
         if (isBluetoothServiceRunning) {
             stopBluetoothService()
         }
+
+        // Stop the notification service
+        val notificationServiceIntent = Intent(this, NotificationService::class.java)
+        stopService(notificationServiceIntent)
     }
 
     private fun stopBluetoothService() {
