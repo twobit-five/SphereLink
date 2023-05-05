@@ -44,6 +44,7 @@ https://github.com/twobit-five/esp32-Device
 
 ### QR code Scanner [Section]
 
+[Add Description of this screen and screenshot]
 [choose to use the qr scanner libray due to ease of implementation]
 [less permission since google handles it]
 
