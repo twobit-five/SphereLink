@@ -6,6 +6,8 @@
 [persistant permission request after permission has been granted]
 [connection issues if device has some how become bonded, dont bond the device!]
 
+[occasional bluetooth connection issues, try restarting esp32. if doesnt work during testing some bluetooth component crashed and had to restart phone to fix.]
+
 ## Description:
 The purpose of this app is to track distances of BLE devices.  [why did we create this, what s it for?] [connects to many devices by scanning barcodes]
 ## Architecure and Design
