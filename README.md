@@ -4,13 +4,13 @@
 [qr code scanner issue and fix]
 [Could be optimized for batter life]
 [persistant permission request after permission has been granted]
+[connection issues if device has some how become bonded, dont bond the device!]
 
 ## Description:
 The purpose of this app is to track distances of BLE devices.  [why did we create this, what s it for?] [connects to many devices by scanning barcodes]
-
 ## Architecure and Design
 
-[keywords to use MVVM, room data base?, kotlin, jetpack compose]
+[keywords to use MVVM, room data base?, kotlin, jetpack compose, dagger hilt dependency injection]
 [MVVM design used with navigation for implementation of UI]
 [Give details about how distance is calculated]
 [How often is distance calculated, how often are rssi values taken? how many?]
@@ -50,13 +50,14 @@ https://github.com/twobit-five/esp32-Device
 ## Future Work
 [implement actual battery levels]
 [optimize batter]
-[bonded device logic for faster reconnects and encryption during transmission]
-[Bad wording but, setting preferred phy on connected devices to LE Coded, gives better reliability and greater distances at the cost of trasmission rate]
+[add bonded device logic for faster reconnects and encryption during transmission]
+[Bad wording but, setting preferred phy on connected devices to LE Coded (on both ends), gives better reliability and greater distances at the cost of trasmission rate]
 [improving calculation by some how using trianglution or possibly feature from ble 5.1 AoA and AoD]
 [Notification System]
-[Settings file for customization, distance threshold, interval, delay between readings etc]
+[Settings Ui for customization of, distance threshold, interval, delay between readings etc]
 [Additional service which could help us in determining the calibruated vale for base rssi]
-[]
+[implemting unit tests]
+[better looking ui to present data]
 
 ## Pictures (Remove after moving pictures to sections)
 ![thumbnail_image006](https://user-images.githubusercontent.com/69398054/236332346-4f54a794-3ea2-4d9d-b8fb-05ef127b3c41.jpg)
