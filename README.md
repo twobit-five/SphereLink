@@ -2,6 +2,18 @@
 
 ## Known Issues:
 [qr code scanner issue and fix]
+[can we shorten the display text of the link?]
+
+The google code Scanner:
+
+https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fdevelopers.google.com%2Fml-kit%2Fvision%2Fbarcode-scanning%2Fcode-scanner%23%3A~%3Atext%3DAdd%2520the%2520Google%2520Play%2520services%2520dependency%2520for%2520the%2Cis%2520commonly%2520app%252Fbuild.gradle%253A%2520dependencies%2520%257B%2520implementation%2520%2527com.google.android.gms%253Aplay-services-code-scanner%253A16.0.0%2527%2520%257D&data=05%7C01%7Cjeremyberry%40mail.umkc.edu%7C52a29a4ae0c1454b8c6908db4dad365b%7Ce3fefdbef7e9401ba51a355e01b05a89%7C0%7C0%7C638189178605862338%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&sdata=F9CpiNSe1eVckMxSxf6q1YyqF1oKR8qxi51Vexb9L3k%3D&reserved=0
+
+Issue:
+https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fissuetracker.google.com%2Fissues%2F261579118%3Fpli%3D1&data=05%7C01%7Cjeremyberry%40mail.umkc.edu%7C52a29a4ae0c1454b8c6908db4dad365b%7Ce3fefdbef7e9401ba51a355e01b05a89%7C0%7C0%7C638189178605862338%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&sdata=FrfdQZDZtcUqOE2w0jthhWZnq0cMEbB9mXbkjCCZbCk%3D&reserved=0
+
+How to clear data from an app: (If you experience the issue): 
+https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fsupport.google.com%2Fgoogleplay%2Fanswer%2F9037938%3Fhl%3Den&data=05%7C01%7Cjeremyberry%40mail.umkc.edu%7C52a29a4ae0c1454b8c6908db4dad365b%7Ce3fefdbef7e9401ba51a355e01b05a89%7C0%7C0%7C638189178605862338%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&sdata=NT0o%2FktBL0WJ6yR4MbV3Cslo%2BdZeOIHtegR4dhLHI%2Fs%3D&reserved=0
+
 [Could be optimized for batter life]
 [persistant permission request after permission has been granted]
 [connection issues if device has some how become bonded, dont bond the device!]
