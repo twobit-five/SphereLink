@@ -106,6 +106,27 @@ A notification service is added to notify the user in case the connected BLE dev
 
 ![thumbnail_image](https://user-images.githubusercontent.com/69398054/236593195-bc307c37-0484-40f3-bbcb-4ff771564a15.png)
 
+
+## Some of the most resources for our Inspiration and Credits
+
+MVVM Architecure:
+https://www.youtube.com/watch?v=A7CGcFjQQtQ&t=4636s
+
+Notifications:
+https://www.youtube.com/watch?v=LP623htmWcI&t=1285s
+
+Dependency Injection:
+https://www.youtube.com/watch?v=bbMsuI2p1DQ&t=423s
+
+Resolution to dependency Issue (Beginning of Project):
+https://stackoverflow.com/questions/75883656/dependency-issue-with-android-project
+
+And many more...
+
+[add others as they are rediscovered]
+
+
+
 ## Pictures (Remove after moving pictures to sections)
 ![thumbnail_image006](https://user-images.githubusercontent.com/69398054/236332346-4f54a794-3ea2-4d9d-b8fb-05ef127b3c41.jpg)
 ![Screenshot_20230504-161833_SphereLink](https://user-images.githubusercontent.com/69398054/236332669-12320b43-b5c8-4b6c-9c80-56518b51c4a8.jpg)
