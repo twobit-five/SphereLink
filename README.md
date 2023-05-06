@@ -92,10 +92,6 @@ A notification service is added to notify the user in case the connected BLE dev
 
 ![thumbnail_image](https://user-images.githubusercontent.com/69398054/236593153-b29ac1c2-2fdf-4563-a3af-4db9bf240ea9.png)
 
-75ft - (22.86m)
-
-![thumbnail_image](https://user-images.githubusercontent.com/69398054/236593175-dec01093-9f6c-4940-accf-7a8b6f2069ac.png)
-
 45ft - (13.7m)
 
 ![thumbnail_image](https://user-images.githubusercontent.com/69398054/236593166-fe0f708f-d926-4956-bd28-ecf244ab164c.png)
