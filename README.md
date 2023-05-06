@@ -22,6 +22,8 @@ https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fsupport.google
 
 ## Notification Service [has a bug, waiting to resolve prior to creating pull request.]
 A notification service is added to notify the user in case the connected BLE device goes beyond certain threshold distance. The service take a threshold distance, say 10 meters, if the esp32 device goes further than 10 meters the service will send a notification/alert stating that the device is gone beyond 10 meters.
+
+Verification the service properly is started:
 ![WhatsApp Image 2023-05-05 at 6 47 06 PM](https://user-images.githubusercontent.com/112286488/236586060-5e330028-3db5-4eb0-8de1-b370e511ca4b.jpeg)
 
 Branch: (verify this branch)
