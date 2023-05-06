@@ -1,11 +1,9 @@
 # SphereLink
 
 ## Known Issues:
-[qr code scanner issue and fix]
 [can we shorten the display text of the link?]
 
-The google code Scanner:
-
+### The google code Scanner:
 https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fdevelopers.google.com%2Fml-kit%2Fvision%2Fbarcode-scanning%2Fcode-scanner%23%3A~%3Atext%3DAdd%2520the%2520Google%2520Play%2520services%2520dependency%2520for%2520the%2Cis%2520commonly%2520app%252Fbuild.gradle%253A%2520dependencies%2520%257B%2520implementation%2520%2527com.google.android.gms%253Aplay-services-code-scanner%253A16.0.0%2527%2520%257D&data=05%7C01%7Cjeremyberry%40mail.umkc.edu%7C52a29a4ae0c1454b8c6908db4dad365b%7Ce3fefdbef7e9401ba51a355e01b05a89%7C0%7C0%7C638189178605862338%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&sdata=F9CpiNSe1eVckMxSxf6q1YyqF1oKR8qxi51Vexb9L3k%3D&reserved=0
 
 Issue:
@@ -20,7 +18,7 @@ https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fsupport.google
 
 [occasional bluetooth connection issues, try restarting esp32. if doesnt work during testing some bluetooth component crashed and had to restart phone to fix.]
 
-## Notification Service [has a bug, waiting to resolve prior to creating pull request.]
+### Notification Service [has a bug, waiting to resolve prior to creating pull request.]
 A notification service is added to notify the user in case the connected BLE device goes beyond certain threshold distance. The service take a threshold distance, say 10 meters, if the esp32 device goes further than 10 meters the service will send a notification/alert stating that the device is gone beyond 10 meters.
 
 Verification the service properly is started:
