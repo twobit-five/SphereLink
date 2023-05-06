@@ -20,6 +20,15 @@ https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fsupport.google
 
 [occasional bluetooth connection issues, try restarting esp32. if doesnt work during testing some bluetooth component crashed and had to restart phone to fix.]
 
+## Notification Service [has a bug, waiting to resolve prior to creating pull request.]
+A notification service is added to notify the user in case the connected BLE device goes beyond certain threshold distance. The service take a threshold distance, say 10 meters, if the esp32 device goes further than 10 meters the service will send a notification/alert stating that the device is gone beyond 10 meters.
+![WhatsApp Image 2023-05-05 at 6 47 06 PM](https://user-images.githubusercontent.com/112286488/236586060-5e330028-3db5-4eb0-8de1-b370e511ca4b.jpeg)
+
+Branch: (verify this branch)
+https://github.com/twobit-five/SphereLink/tree/imran_master
+
+May eliminate additional service and call logic as distances are calculated from the DistantCalculator class to create notification directly.
+
 ## Description:
 The purpose of this app is to track distances of BLE devices.  [why did we create this, what s it for?] [connects to many devices by scanning barcodes]
 ## Architecure and Design
@@ -65,10 +74,6 @@ https://github.com/twobit-five/esp32-Device
 [Add Description of this screen and screenshot]
 [choose to use the qr scanner libray due to ease of implementation]
 [less permission since google handles it]
-
-## Notification Service [has a bug]
-A notification service is added to notify the user in case the connected BLE device goes beyond certain threshold distance. The service take a threshold distance, say 10 meters, if the esp32 device goes further than 10 meters the service will send a notification/alert stating that the device is gone beyond 10 meters.
-![WhatsApp Image 2023-05-05 at 6 47 06 PM](https://user-images.githubusercontent.com/112286488/236586060-5e330028-3db5-4eb0-8de1-b370e511ca4b.jpeg)
 
 ## Future Work
 [implement actual battery levels]
