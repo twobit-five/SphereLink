@@ -123,7 +123,7 @@ https://developer.android.com/guide/topics/connectivity/uwb
 
 [Use trending values to determine whether moving towards or away. Could be used as part of notification logic to determine whether or what alert/notification is created.]
 
-[How could machine learning be trained to assist when notification are created with GPS data, trending data, rssi stats, dist calc etc.?]
+[How could machine learning be trained to assist when notification are created with GPS data, magnetometers (compass) and gyroscopes, accelerometers, rssi trending data, rssi stats, dist calc etc.?]
 
 [ability to pause notifications for a specific device. possibly for a period of time]
 
