@@ -81,6 +81,8 @@ A notification service is added to notify the user in case the connected BLE dev
 [Additional service which could help us in determining the calibruated vale for base rssi]
 [implemting unit tests]
 [better looking ui to present data]
+[Add rssi stat graphs for additional details from the device details screen]
+[Add graph which visualizes device ranges from main screen. ie device can be viewed in list or in a visual way.]
 
 ## Test Results:
 
