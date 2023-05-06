@@ -13,7 +13,9 @@ How to clear data from an app: (If you experience the issue):
 https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fsupport.google.com%2Fgoogleplay%2Fanswer%2F9037938%3Fhl%3Den&data=05%7C01%7Cjeremyberry%40mail.umkc.edu%7C52a29a4ae0c1454b8c6908db4dad365b%7Ce3fefdbef7e9401ba51a355e01b05a89%7C0%7C0%7C638189178605862338%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&sdata=NT0o%2FktBL0WJ6yR4MbV3Cslo%2BdZeOIHtegR4dhLHI%2Fs%3D&reserved=0
 
 [Could be optimized for batter life]
+
 [persistant permission request after permission has been granted]
+
 [connection issues if device has some how become bonded, dont bond the device!]
 
 [occasional bluetooth connection issues, try restarting esp32. if doesnt work during testing some bluetooth component crashed and had to restart phone to fix.]
@@ -38,11 +40,17 @@ The purpose of this app is to track distances of BLE devices.  [why did we creat
 [one to many design. ie one phone to many esp32 devices.]
 
 [keywords to use MVVM, room data base?, kotlin, jetpack compose, dagger hilt dependency injection]
+
 [MVVM design used with navigation for implementation of UI]
+
 [Give details about how distance is calculated]
+
 [How often is distance calculated, how often are rssi values taken? how many?]
+
 [3 database tables and there purpose]
+
 [General Overview of the classes maybe?]
+
 [Brief over view of the classes in the domain path]
 
 [focus on describing the classes in the bluetooth and distance paths. Note distance calculation does more than the name. probably should be renamed]
@@ -72,21 +80,35 @@ https://github.com/twobit-five/esp32-Device
 ### QR code Scanner [Section]
 
 [Add Description of this screen and screenshot]
+
 [choose to use the qr scanner libray due to ease of implementation]
+
 [less permission since google handles it]
 
 ## Future Work
 [implement actual battery levels]
+
 [optimize batter]
+
 [add bonded device logic for faster reconnects and encryption during transmission]
+
 [Bad wording but, setting preferred phy on connected devices to LE Coded (on both ends), gives better reliability and greater distances at the cost of trasmission rate]
+
 [improving calculation by some how using trianglution or possibly feature from ble 5.1 AoA and AoD]
-[Notification System]
+
+[Notification System] 
+[could use stats from rssi stats table to ensure within certain probabitity the distance threshold has been exceeded prrior to creating the alert]
+
 [Settings Ui for customization of, distance threshold, interval, delay between readings etc]
+
 [Additional service which could help us in determining the calibruated vale for base rssi]
+
 [implemting unit tests]
+
 [better looking ui to present data]
+
 [Add rssi stat graphs for additional details from the device details screen]
+
 [Add graph which visualizes device ranges from main screen. ie device can be viewed in list or in a visual way.]
 
 ## Test Results:
@@ -113,24 +135,28 @@ https://github.com/twobit-five/esp32-Device
 ## Some of the most resources for our Inspiration and Credits
 
 MVVM Architecure:
+
 https://www.youtube.com/watch?v=A7CGcFjQQtQ&t=4636s
 
 Notifications:
+
 https://www.youtube.com/watch?v=LP623htmWcI&t=1285s
 
 Dependency Injection:
+
 https://www.youtube.com/watch?v=bbMsuI2p1DQ&t=423s
 
 Resolution to dependency Issue (Beginning of Project):
+
 https://stackoverflow.com/questions/75883656/dependency-issue-with-android-project
 
 Permission Handler:
+
 https://www.youtube.com/watch?v=D3JCtaK8LSU&t=1066s
 
 And many more...
 
 [add others as they are rediscovered]
-
 
 
 ## Pictures (Remove after moving pictures to sections)
