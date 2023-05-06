@@ -111,6 +111,10 @@ https://github.com/twobit-five/esp32-Device
 
 [Add graph which visualizes device ranges from main screen. ie device can be viewed in list or in a visual way.]
 
+[dual support uwb devices and ble devices, uwb provides better accuracy but only available on newer devices.]
+
+https://developer.android.com/guide/topics/connectivity/uwb
+
 ## Test Results:
 
 [Describe testing enviroment]
