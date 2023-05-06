@@ -24,6 +24,10 @@ https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fsupport.google
 The purpose of this app is to track distances of BLE devices.  [why did we create this, what s it for?] [connects to many devices by scanning barcodes]
 ## Architecure and Design
 
+[include Avas drawing for the phone architecture]
+
+[one to many design. ie one phone to many esp32 devices.]
+
 [keywords to use MVVM, room data base?, kotlin, jetpack compose, dagger hilt dependency injection]
 [MVVM design used with navigation for implementation of UI]
 [Give details about how distance is calculated]
