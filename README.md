@@ -35,7 +35,8 @@ May eliminate additional service and call logic as distances are calculated from
 The purpose of this app is to track distances of BLE devices.  [why did we create this, what s it for?] [connects to many devices by scanning barcodes]
 ## Architecure and Design
 
-[include Avas drawing for the phone architecture]
+[include Avas drawing for the phone architecture, update after this is replaced]
+![image](https://user-images.githubusercontent.com/69398054/236609442-562c0928-6c49-4de2-b815-61279fe40893.jpg)
 
 [one to many design. ie one phone to many esp32 devices.]
 
@@ -86,6 +87,8 @@ https://github.com/twobit-five/esp32-Device
 [less permission since google handles it]
 
 ## Future Work
+[possibly a different section, but devices can only maintain so many connection to ble devices. perhaps 7-10 maybe 20 ish? IDK verify.  But this is a limitation of the App]
+
 [implement actual battery levels]
 
 [sound bracelet device when out of range???]
@@ -127,6 +130,8 @@ https://developer.android.com/guide/topics/connectivity/uwb
 ## Test Results:
 
 [Describe testing enviroment]
+
+[Can we give an indication of the accuracy of each test, with a short description?]
 
 15 ft - (4.572)
 
