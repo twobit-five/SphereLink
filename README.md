@@ -78,6 +78,22 @@ A notification service is added to notify the user in case the connected BLE dev
 [implemting unit tests]
 [better looking ui to present data]
 
+## Test Results:
+15 ft - (4.572)
+![thumbnail_image](https://user-images.githubusercontent.com/69398054/236593153-b29ac1c2-2fdf-4563-a3af-4db9bf240ea9.png)
+
+75ft - (22.86m)
+![thumbnail_image](https://user-images.githubusercontent.com/69398054/236593175-dec01093-9f6c-4940-accf-7a8b6f2069ac.png)
+
+45ft - (13.7m)
+![thumbnail_image](https://user-images.githubusercontent.com/69398054/236593166-fe0f708f-d926-4956-bd28-ecf244ab164c.png)
+
+75ft - (22.86m)
+![thumbnail_image](https://user-images.githubusercontent.com/69398054/236593184-5192ebaa-1df7-4a3e-9b64-2f0d6d720bee.png)
+
+90ft - (27.432m)
+![thumbnail_image](https://user-images.githubusercontent.com/69398054/236593195-bc307c37-0484-40f3-bbcb-4ff771564a15.png)
+
 ## Pictures (Remove after moving pictures to sections)
 ![thumbnail_image006](https://user-images.githubusercontent.com/69398054/236332346-4f54a794-3ea2-4d9d-b8fb-05ef127b3c41.jpg)
 ![Screenshot_20230504-161833_SphereLink](https://user-images.githubusercontent.com/69398054/236332669-12320b43-b5c8-4b6c-9c80-56518b51c4a8.jpg)
