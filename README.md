@@ -121,6 +121,9 @@ https://www.youtube.com/watch?v=bbMsuI2p1DQ&t=423s
 Resolution to dependency Issue (Beginning of Project):
 https://stackoverflow.com/questions/75883656/dependency-issue-with-android-project
 
+Permission Handler:
+https://www.youtube.com/watch?v=D3JCtaK8LSU&t=1066s
+
 And many more...
 
 [add others as they are rediscovered]
