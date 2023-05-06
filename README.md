@@ -88,6 +88,8 @@ https://github.com/twobit-five/esp32-Device
 ## Future Work
 [implement actual battery levels]
 
+[sound bracelet device when out of range???]
+
 [optimize batter]
 
 [add bonded device logic for faster reconnects and encryption during transmission]
@@ -95,6 +97,9 @@ https://github.com/twobit-five/esp32-Device
 [Bad wording but, setting preferred phy on connected devices to LE Coded (on both ends), gives better reliability and greater distances at the cost of trasmission rate]
 
 [improving calculation by some how using trianglution or possibly feature from ble 5.1 AoA and AoD]
+[dual support uwb devices and ble devices, uwb provides better accuracy but only available on newer devices.]
+
+https://developer.android.com/guide/topics/connectivity/uwb
 
 [Notification System] 
 [could use stats from rssi stats table to ensure within certain probabitity the distance threshold has been exceeded prrior to creating the alert]
@@ -111,9 +116,13 @@ https://github.com/twobit-five/esp32-Device
 
 [Add graph which visualizes device ranges from main screen. ie device can be viewed in list or in a visual way.]
 
-[dual support uwb devices and ble devices, uwb provides better accuracy but only available on newer devices.]
+[Utilize GPS to indicate moving speed, could be used to determine the interval which rssi values are collected.]
 
-https://developer.android.com/guide/topics/connectivity/uwb
+[Use trending values to determine whether moving towards or away. Could be used as part of notification logic to determine whether or what alert/notification is created.]
+
+[How could machine learning be trained to assist when notification are created with GPS data, trending data, rssi stats, dist calc etc.?]
+
+[ability to pause notifications for a specific device. possibly for a period of time]
 
 ## Test Results:
 
@@ -161,7 +170,6 @@ https://www.youtube.com/watch?v=D3JCtaK8LSU&t=1066s
 And many more...
 
 [add others as they are rediscovered]
-
 
 ## Pictures (Remove after moving pictures to sections)
 ![thumbnail_image006](https://user-images.githubusercontent.com/69398054/236332346-4f54a794-3ea2-4d9d-b8fb-05ef127b3c41.jpg)
