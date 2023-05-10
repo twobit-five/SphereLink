@@ -35,8 +35,7 @@ May eliminate additional service and call logic as distances are calculated from
 The purpose of this app is to track distances of BLE devices.  [why did we create this, what s it for?] [connects to many devices by scanning barcodes]
 ## Architecure and Design
 
-[include Avas drawing for the phone architecture, update after this is replaced]
-![image](https://user-images.githubusercontent.com/69398054/236609442-562c0928-6c49-4de2-b815-61279fe40893.jpg)
+![image](https://github.com/twobit-five/SphereLink/assets/69398054/bd0a68b5-45f4-41d2-a515-b19e14f3d711)
 
 [one to many design. ie one phone to many esp32 devices.]
 
